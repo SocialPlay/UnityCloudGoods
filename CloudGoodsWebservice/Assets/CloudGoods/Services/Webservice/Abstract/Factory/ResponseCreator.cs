@@ -49,6 +49,8 @@ namespace CloudGoods.Services.Webservice
         InstancedItemInformation CreateInstancedItemInformationResponse(string responseData);
 
         List<PremiumCurrencyBundle> CreatePremiumCurrencyBundleResponse(string responseData);
+
+        PurchasePremiumCurrencyBundleResponse CreatePurchasePremiumBundleResponse(string responseData);
     }
 
 }

@@ -74,7 +74,7 @@ namespace CloudGoods.CurrencyPurchase
                 case BuildPlatform.BuildPlatformType.IOS:
                     platformPurchasor = gameObject.AddComponent<iOSPremiumCurrencyPurchaser>();
                     GameObject o = new GameObject("iOSConnect");
-                    //o.AddComponent<iOSConnect>();
+                    o.AddComponent<iOSConnect>();
                     break;
                 case BuildPlatform.BuildPlatformType.CloudGoodsStandAlone:
                     Debug.LogWarning("Cloud Goods Stand alone has not purchase method currently.");

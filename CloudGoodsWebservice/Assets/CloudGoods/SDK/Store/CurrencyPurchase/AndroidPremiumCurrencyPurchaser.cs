@@ -4,6 +4,7 @@ using System;
 using LitJson;
 using CloudGoods.SDK.Models;
 using CloudGoods.Services;
+using CloudGoods.Services.WebCommunication;
 
 namespace CloudGoods.CurrencyPurchase
 {
@@ -13,7 +14,8 @@ namespace CloudGoods.CurrencyPurchase
         public string currentProductID = "";
 
 #if UNITY_ANDROID
-        public AndroidJavaClass jc;
+        AndroidJavaClass jc;
+        AndroidJavaClass cls;
 #endif
 
         public event Action<PurchasePremiumCurrencyBundleResponse> RecievedPurchaseResponse;
@@ -28,146 +30,127 @@ namespace CloudGoods.CurrencyPurchase
         void initStore()
         {
 #if UNITY_ANDROID
-        if (string.IsNullOrEmpty(CloudGoodsSettings.AndroidKey))
-        {
-            Debug.LogError("No Android key has been set, cannot initialize premium bundle store");
-            return;
-        }
-
-        jc = new AndroidJavaClass("com.example.unityandroidpremiumpurchase.AndroidPurchaser");
-
-        using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            using (AndroidJavaObject obj_Activity = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+            if (string.IsNullOrEmpty(CloudGoodsSettings.AndroidKey))
             {
-
-                Debug.Log("Calling androidpurchas init");
-                jc.CallStatic("InitAndroidPurchaser", obj_Activity, CloudGoodsSettings.AndroidKey);
-
+                Debug.LogError("No Android key has been set, cannot initialize premium bundle store");
+                return;
             }
-        }
+
+            jc = new AndroidJavaClass("com.example.unityandroidpremiumpurchase.AndroidPurchaser");
+
+            cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+
+            {
+                using (AndroidJavaObject obj_Activity = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+
+                    Debug.Log("Calling androidpurchas init");
+                    jc.CallStatic("InitAndroidPurchaser", obj_Activity, CloudGoodsSettings.AndroidKey, gameObject.name);
+
+                }
+            }
 #endif
         }
 
         public void Purchase(PremiumBundle bundleItem, int amount, string userID)
         {
 #if UNITY_ANDROID
-        if (string.IsNullOrEmpty(CloudGoodsSettings.AndroidKey))
-        {
-            Debug.LogError("No Android key has been set, cannot purchase from premium store");
-            return;
+            if (string.IsNullOrEmpty(CloudGoodsSettings.AndroidKey))
+            {
+                Debug.LogError("No Android key has been set, cannot purchase from premium store");
+                return;
+            }
+
+            currentBundleID = int.Parse(bundleItem.BundleID);
+            currentProductID = bundleItem.ProductID;
+
+                using (AndroidJavaObject obj_Activity = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+                    jc.CallStatic("PurchasePremiumCurrencyBundle", obj_Activity, currentProductID);
+
+                }
+            
+#endif
         }
 
-        currentBundleID = int.Parse(bundleItem.BundleID);
-        currentProductID = bundleItem.ProductID;
-
-        Debug.Log("Current product id: " + currentProductID);
-
-        using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        void ConsumeAndroidPurchase()
         {
             using (AndroidJavaObject obj_Activity = cls.GetStatic<AndroidJavaObject>("currentActivity"))
             {
-                jc.CallStatic("PurchasePremiumCurrencyBundle", obj_Activity, currentProductID);
+                jc.CallStatic("ConsumeCurrentPurchase");
 
             }
         }
-#endif
-        }
 
-        void ErrorFromAndroid(string responseCode)
+        void OnAndroidPurchaseSuccessful(string message)
         {
-#if UNITY_ANDROID
-        if (OnPurchaseErrorEvent != null)
-        {
-            PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
-            response.StatusCode = 0;
-            response.Message = "Error Occured, Response Code: " + responseCode;
-            OnPurchaseErrorEvent(response);
-        }
+            Debug.Log("Received from java message: " + message);
 
-        if (responseCode.Remove(1, responseCode.Length - 1) == "7")
-        {
-            ConsumeOwneditem();
-        }
-#endif
-        }
-        private void ConsumeOwneditem()
-        {
-#if UNITY_ANDROID
-        using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            using (AndroidJavaObject obj_Activity = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+            if (message != "Fail")
             {
-                //cls_StorePurchaser.CallStatic("consumeitem", obj_Activity, currentProductID);
-            }
-        }
-#endif
-        }
+                BundlePurchaseRequest bundlePurchaseRequest = new BundlePurchaseRequest();
+                bundlePurchaseRequest.BundleID = currentBundleID;
+                bundlePurchaseRequest.PaymentPlatform = 3;
 
-        private void ConsumeCurrentPurchase()
-        {
-#if UNITY_ANDROID
-        using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            using (AndroidJavaObject obj_Activity = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+                GooglePlayReceiptToken receiptToken = JsonMapper.ToObject<GooglePlayReceiptToken>(message);
+                receiptToken.OrderInfo = receiptToken.OrderInfo.Replace("\\\"", "\"");
+                string jsonData  = JsonMapper.ToJson(receiptToken);
+
+                bundlePurchaseRequest.ReceiptToken = jsonData;
+
+                CallHandler.Instance.PurchasePremiumCurrencyBundle(bundlePurchaseRequest, OnReceivedPurchaseResponse);
+            }
+            else
             {
-                //cls_StorePurchaser.CallStatic("ConsumeCurrentPurchase", obj_Activity);
+                PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
+                response.StatusCode = 0;
+                response.Message = message;
+
+                OnPurchaseErrorEvent(response);
             }
         }
-#endif
-        }
 
-        void RecieveFromJava(string message)
+        void OnAndroidPurchaseCancelled(string message)
         {
-#if UNITY_ANDROID
-        Debug.Log("Received from java message: " + message);
-
-        if (message != "Fail")
-        {
-            BundlePurchaseRequest bundlePurchaseRequest = new BundlePurchaseRequest();
-            bundlePurchaseRequest.BundleID = currentBundleID;
-           // bundlePurchaseRequest.UserID = CloudGoods.user.userID.ToString();
-            bundlePurchaseRequest.ReceiptToken = message;
-
-            //TODO implement platform check for platform premium currency bundle purchase
-            bundlePurchaseRequest.PaymentPlatform = 3;
-
-          //  string bundleJsonString = JsonConvert.SerializeObject(bundlePurchaseRequest);
-
-        
-          //  CloudGoods.PurchaseCreditBundles(bundleJsonString, OnReceivedPurchaseResponse);
-        }
-        else
-        {
-            PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
-            response.StatusCode = 0;
-            response.Message = message;
-
-            OnPurchaseErrorEvent(response);
-        }
-#endif
+            OnPurchaseErrorEvent(new PurchasePremiumCurrencyBundleResponse()
+                {
+                    Balance = 0,
+                    Message = "Android Purchase Cancelled",
+                    StatusCode = 2
+                });
         }
 
         void DebugFromJava(string message)
         {
             Debug.Log("Debug from Java: " + message);
         }
+        void ErrorFromAndroid(string msg)
+        {
+            Debug.LogError("Error from android: " + msg);
+        }       
+
 
         public void OnReceivedPurchaseResponse(PurchasePremiumCurrencyBundleResponse data)
         {
+            Debug.Log("Received purchase response:" + data.Message);
+
             if (data.StatusCode == 1)
             {
-                ConsumeCurrentPurchase();
-
                 if (RecievedPurchaseResponse != null)
+                {
                     RecievedPurchaseResponse(data);
+                    initStore();
+                }
             }
             else
             {
                 Debug.Log("Purchase was not authentic, consuming Item");
 
                 if (OnPurchaseErrorEvent != null)
+                {
                     OnPurchaseErrorEvent(data);
+                    initStore();
+                }
 
             }
         }
