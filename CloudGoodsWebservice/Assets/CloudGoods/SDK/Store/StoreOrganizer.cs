@@ -72,9 +72,14 @@ namespace CloudGoods.SDK.Store
             for (int i = 0, imax = storeItems.Count; i < imax; i++)
             {
                 StoreItem storeItemInfo = storeItems[i];
-                if (storeItemInfo.ItemInformation.Name.StartsWith(searchFilter.ToLower(), StringComparison.InvariantCultureIgnoreCase)) filteredStoreItems.Add(storeItemInfo);
+                if (StringContains(storeItemInfo.ItemInformation.Name, searchFilter.ToLower(), StringComparison.InvariantCultureIgnoreCase)) filteredStoreItems.Add(storeItemInfo);
             }
             return filteredStoreItems;
+        }
+
+        public bool StringContains(string source, string toCheck, StringComparison comp)
+        {
+            return source.IndexOf(toCheck, comp) >= 0;
         }
 
     }

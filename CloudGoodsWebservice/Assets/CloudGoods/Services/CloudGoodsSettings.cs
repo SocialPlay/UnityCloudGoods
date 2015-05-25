@@ -22,6 +22,8 @@ namespace CloudGoods.Services
 
         public string appID;
         public string appSecret;
+        public string expSceneUserName;
+        public string expScenePass;
         public ScreenType screen;
         public string url = "http://webservice.socialplay.com/cloudgoods/cloudgoodsservice.svc/";
         public string bundlesUrl = "https://socialplay.blob.core.windows.net/unityassetbundles/";
@@ -86,6 +88,27 @@ namespace CloudGoods.Services
             get
             {
                 return instance.url.Trim();
+            }
+        }
+
+        static public string ExpSceneUserName
+        {
+            get{
+                if (!string.IsNullOrEmpty(instance.expSceneUserName))
+                    return instance.expSceneUserName;
+                else
+                    throw new Exception("User Name must be set in the Cloud Goods Settings in order to use the example scenes");
+            }
+        }
+
+        static public string ExpScenePassword
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(instance.expScenePass))
+                    return instance.expScenePass;
+                else
+                    throw new Exception("Password must be set in the Cloud Goods Settings in order to use the example scenes");
             }
         }
 

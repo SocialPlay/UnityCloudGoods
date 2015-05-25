@@ -4,6 +4,7 @@ using CloudGoods.ItemBundles;
 using CloudGoods;
 using CloudGoods.SDK.Models;
 using CloudGoods.Services.WebCommunication;
+using CloudGoods.Services;
 
 public class ItemBundleStoreExample : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class ItemBundleStoreExample : MonoBehaviour
 
     void CallHandler_CloudGoodsInitilized()
     {
-        CloudGoods.Services.AccountServices.Login(new LoginRequest("lionel.sy@gmail.com", "123456"), OnRegisteredtoSession);
+        CloudGoods.Services.AccountServices.Login(new LoginRequest(CloudGoodsSettings.ExpSceneUserName, CloudGoodsSettings.ExpScenePassword), OnRegisteredtoSession);
     }
 
     void OnRegisteredtoSession(CloudGoodsUser user)

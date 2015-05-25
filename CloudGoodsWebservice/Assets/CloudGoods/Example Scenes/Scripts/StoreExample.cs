@@ -21,7 +21,7 @@ public class StoreExample : MonoBehaviour
 
     void CallHandler_CloudGoodsInitilized()
     {
-        AccountServices.Login(new LoginRequest("lionel.sy@gmail.com", "123456"), OnRegisteredtoSession);
+        AccountServices.Login(new LoginRequest(CloudGoodsSettings.ExpSceneUserName, CloudGoodsSettings.ExpScenePassword), OnRegisteredtoSession);
     }
 
     void OnRegisteredtoSession(CloudGoodsUser user)
