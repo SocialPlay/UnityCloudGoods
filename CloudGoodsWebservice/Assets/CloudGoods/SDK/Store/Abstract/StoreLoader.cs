@@ -39,13 +39,19 @@ namespace CloudGoods.SDK.Store
         {
             int pageMax = 0;
 
+            Debug.Log("Page num: " + pageNum + "   ItemAmount: " + (GetPageAmount(itemAmount)));
+
             if (pageNum < GetPageAmount(itemAmount) - 1)
             {
                 pageMax = maxGridAmount;
             }
-            else
+            else if((itemAmount % maxGridAmount) > 0)
             {
                 pageMax = itemAmount % maxGridAmount;
+            }
+            else
+            {
+                pageMax = maxGridAmount;
             }
 
             return pageMax;
@@ -69,6 +75,10 @@ namespace CloudGoods.SDK.Store
             if ((itemCount % maxGridAmount) > 0)
                 calcPageAmount++;
 
+
+            Debug.Log("calc page amount: " + calcPageAmount);
+
+
             return calcPageAmount;
         }
 
@@ -82,7 +92,7 @@ namespace CloudGoods.SDK.Store
             if (pageNum != currentPage)
             {
                 currentPage = pageNum;
-
+                Debug.Log("Store filtered list: " + filteredList.Count);
                 LoadStoreWithPaging(filteredList, pageNum);
             }
         }

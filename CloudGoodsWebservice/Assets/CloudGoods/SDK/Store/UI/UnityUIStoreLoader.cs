@@ -33,8 +33,14 @@ namespace CloudGoods.SDK.Store.UI
 
                 int PageMax = GetPageMax(listItems.Count, pageNum);
 
+                Debug.Log("Page num: " + pageNum);
+                Debug.Log("pagemax: " + PageMax);
+                Debug.Log("pageNUm + grid amount: " + (pageNum * maxGridAmount));
+
                 for (int i = pageNum * maxGridAmount; i < (pageNum * maxGridAmount + PageMax); i++)
                 {
+                    Debug.Log("Index: " + i);
+
                     GameObject newItem = (GameObject)GameObject.Instantiate(itemButtonPrefab);
                     newItem.transform.SetParent(transform);
                     newItem.transform.localPosition = Vector3.zero;
