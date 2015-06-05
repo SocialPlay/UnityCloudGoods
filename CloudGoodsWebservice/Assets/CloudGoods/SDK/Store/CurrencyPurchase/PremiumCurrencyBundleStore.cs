@@ -40,12 +40,6 @@ namespace CloudGoods.CurrencyPurchase
         }
 
 
-        void OnRegisteredUserToSession(string obj)
-        {
-            if (!isInitialized) Initialize();
-            Debug.Log("OnUser Registered");
-        }
-
         public void Initialize()
         {
             Debug.Log("Initialize Credit Bundles");

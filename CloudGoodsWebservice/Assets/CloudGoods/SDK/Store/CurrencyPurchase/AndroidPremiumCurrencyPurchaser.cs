@@ -75,11 +75,13 @@ namespace CloudGoods.CurrencyPurchase
 
         void ConsumeAndroidPurchase()
         {
+#if UNITY_ANDROID
             using (AndroidJavaObject obj_Activity = cls.GetStatic<AndroidJavaObject>("currentActivity"))
             {
                 jc.CallStatic("ConsumeCurrentPurchase");
 
             }
+#endif
         }
 
         void OnAndroidPurchaseSuccessful(string message)

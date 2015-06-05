@@ -183,6 +183,15 @@ namespace CloudGoods.Services.WebCommunication
 
         #region Item Store Services
 
+        public void FacebookPurchaseRequest(FacebookCurrencyRequest request, Action<int> callback)
+        {
+            StartCoroutine(ServiceGetString(callObjectCreator.CreateFacebookRequestCall(request), x =>
+                {
+                    Debug.Log("request : " + x);
+                    callback(int.Parse(x));
+                }));
+        }
+
         public void GetCurrencyInfo(Action<CurrencyInfoResponse> callback)
         {
             Instance.StartCoroutine(ServiceGetString(callObjectCreator.CreateCurrencyInfoCall(new CurrencyInfoRequest()), x =>

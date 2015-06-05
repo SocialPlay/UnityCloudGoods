@@ -21,10 +21,6 @@ namespace CloudGoods.Services
 
         }
 
-        /// <summary>
-        /// Log a user into the cloudgoods system.
-        /// Only usable for SP Users (Use LoginByPlatform for external login)
-        /// </summary>
         public static void Login(LoginRequest request, Action<CloudGoodsUser> callback)
         {
             CallHandler.Instance.Login(request, user =>
@@ -50,11 +46,6 @@ namespace CloudGoods.Services
             CallHandler.Instance.ResendVerificationEmail(request, callback);
         }
 
-
-        /// <summary>
-        /// Log a user into the cloudgoods system.
-        /// Only usable for external Users (Use Login for SP Users) 
-        /// </summary> 
         public static void LoginByPlatform(LoginByPlatformRequest request, Action<CloudGoodsUser> callback)
         {
             CallHandler.Instance.LoginByPlatform(request, user =>
@@ -63,6 +54,5 @@ namespace CloudGoods.Services
                 callback(user);
             });
         }
-
     }
 }

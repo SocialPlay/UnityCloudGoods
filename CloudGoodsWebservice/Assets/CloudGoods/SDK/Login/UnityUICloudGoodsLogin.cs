@@ -14,15 +14,8 @@ namespace CloudGoods.SDK.Login
     {
 
         #region Login variables
-        public GameObject loginTab;
         public InputField loginUserEmail;
         public InputField loginUserPassword;
-        public Text loginErrorLabel;
-
-        public Toggle autoLoginToggle;
-
-        public GameObject resendVerificationTextObject;
-
 
         private InputFieldValidation loginUserEmailValidator;
         private InputFieldValidation loginUserPasswordValidator;
@@ -31,26 +24,31 @@ namespace CloudGoods.SDK.Login
         #endregion
 
         #region Register variables
-        public GameObject registerTab;
         public InputField registerUserEmail;
         public InputField registerUserPassword;
         public InputField registerUserPasswordConfirm;
         public InputField registerUserName;
-        public Text registerErrorLabel;
 
         private InputFieldValidation registerUserEmailValidator;
         private InputFieldValidation registerUserPasswordValidator;
         private InputFieldValidation registerUserPasswordConfirmValidator;
         #endregion
 
-        #region Confirmations Variables
-        public GameObject confirmationTab;
-        public Text confirmationStatus;
-        #endregion
 
         #region ResendVerification Variables
 
         public GameObject ResendVerificationWindow;
+
+        #endregion
+
+        #region Events
+
+        public static event Action<CloudGoodsUser> UserLoggedIn;
+        public static event Action<RegisteredUser> UserRegistered;
+        public static event Action<StatusMessageResponse> PasswordResetSent;
+        public static event Action<StatusMessageResponse> ResentAuthentication;
+        public static event Action<WebserviceError> ErrorOccurred;
+        public static event Action<bool> UserLoggedOut;
 
         #endregion
 
@@ -69,17 +67,13 @@ namespace CloudGoods.SDK.Login
                 return;
             }
 
-            registerErrorLabel.text = "";
-            registerTab.SetActive(false);
-            confirmationTab.SetActive(false);
-
             loginUserEmailValidator = loginUserEmail.GetComponent<InputFieldValidation>();
             loginUserPasswordValidator = loginUserPassword.GetComponent<InputFieldValidation>();
 
             registerUserEmailValidator = registerUserEmail.GetComponent<InputFieldValidation>();
             registerUserPasswordValidator = registerUserPassword.GetComponent<InputFieldValidation>(); ;
             registerUserPasswordConfirmValidator = registerUserPasswordConfirm.GetComponent<InputFieldValidation>();
-            resendVerificationTextObject.SetActive(false);
+
             if (!string.IsNullOrEmpty(PlayerPrefs.GetString("SocialPlay_Login_UserEmail")))
             {
                 loginUserEmail.text = PlayerPrefs.GetString("SocialPlay_Login_UserEmail");
@@ -88,92 +82,43 @@ namespace CloudGoods.SDK.Login
             {
                 loginUserEmail.text = "";
             }
-
-            if (!string.IsNullOrEmpty(PlayerPrefs.GetString("SocialPlay_UserGuid")))
-            {
-                CloudGoodsUser userInfo = new CloudGoodsUser()
-                {
-                    UserID = PlayerPrefs.GetString("SocialPlay_UserGuid"),
-                    UserName = PlayerPrefs.GetString("SocialPlay_UserName"),
-                    UserEmail = PlayerPrefs.GetString("SocialPlay_UserEmail")
-                };
-
-                if (CallHandler.isInitialized)
-                    AccountServices.Login(new LoginRequest(userInfo.UserEmail, ""), RecivedUserGuid);
-                else
-                    CallHandler.Initialize();
-            }
-
         }
 
         #region webservice responce events
 
-        void RecivedUserGuid(CloudGoodsUser obj)
+        void OnReceivedCloudGoodsUser(CloudGoodsUser userLoginResponse)
         {
-            if (autoLoginToggle != null && autoLoginToggle.isOn == true)
-            {
-                Debug.Log("auto login enabled, saving player prefs");
-
-                PlayerPrefs.SetString("SocialPlay_UserGuid", obj.UserID.ToString());
-                PlayerPrefs.SetString("SocialPlay_UserName", obj.UserName);
-                PlayerPrefs.SetString("SocialPlay_UserEmail", obj.UserEmail);
-            }
-
-            resendVerificationTextObject.SetActive(false);
-            loginErrorLabel.text = "User logged in";
-
-            CloseAllTabsOnLogin();
+            if(UserLoggedIn != null)
+                UserLoggedIn(userLoginResponse);
         }
 
-        void LoginSuccess(Guid userID)
+        void OnRegisteredUser(RegisteredUser registeredUserResponse)
         {
-            loginErrorLabel.text = userID.ToString();
+            if(UserRegistered != null)
+                UserRegistered(registeredUserResponse);
         }
+
+        void OnSentPassword(StatusMessageResponse sentPasswordResponse)
+        {
+            if(PasswordResetSent != null)
+                PasswordResetSent(sentPasswordResponse);
+        }
+
+        void OnResentAuthenticationEmail(StatusMessageResponse authenticationResponse)
+        {
+            if(ResentAuthentication != null)
+                ResentAuthentication(authenticationResponse);
+        }
+
+        void CallHandler_onErrorEvent(WebserviceError errorResponse)
+        {
+            if(ErrorOccurred != null)
+                ErrorOccurred(errorResponse);
+        }
+
         #endregion
 
         #region button functions
-
-        public void DisplayLoginPanel()
-        {
-            loginTab.SetActive(true);
-        }
-
-        public void SwitchToRegister()
-        {
-            registerErrorLabel.text = "";
-            loginTab.SetActive(false);
-            registerTab.SetActive(true);
-            confirmationTab.SetActive(false);
-        }
-
-        public void SwitchToLogin()
-        {
-            loginErrorLabel.text = "";
-            registerTab.SetActive(false);
-            loginTab.SetActive(true);
-            confirmationTab.SetActive(false);
-        }
-
-        public void SwitchToConfirmation()
-        {
-            confirmationStatus.gameObject.SetActive(true);
-            confirmationStatus.text = "Waiting ...";
-            confirmationTab.SetActive(true);
-            loginTab.SetActive(false);
-            registerTab.SetActive(false);
-        }
-
-        public void CloseResendVerificationTab()
-        {
-            ResendVerificationWindow.SetActive(false);
-        }
-
-        void CloseAllTabsOnLogin()
-        {
-            confirmationTab.SetActive(false);
-            loginTab.SetActive(false);
-            registerTab.SetActive(false);
-        }
 
         public void Login()
         {
@@ -188,13 +133,13 @@ namespace CloudGoods.SDK.Login
                 if (!string.IsNullOrEmpty(ErrorMsg)) ErrorMsg += "\n";
                 ErrorMsg += "-Invalid Password";
             }
-            loginErrorLabel.text = ErrorMsg;
+
             if (string.IsNullOrEmpty(ErrorMsg))
             {
                 Debug.Log("login email: " + loginUserEmail.text + " login password: " + loginUserPassword.text);
 
                 PlayerPrefs.SetString("SocialPlay_Login_UserEmail", loginUserEmail.text);
-                AccountServices.Login(new LoginRequest(loginUserEmail.text.ToLower(), loginUserPassword.text), RecivedUserGuid);
+                AccountServices.Login(new LoginRequest(loginUserEmail.text.ToLower(), loginUserPassword.text), OnReceivedCloudGoodsUser);
             }
         }
 
@@ -212,19 +157,10 @@ namespace CloudGoods.SDK.Login
                 if (!string.IsNullOrEmpty(ErrorMsg)) ErrorMsg += "\n";
                 ErrorMsg += "-Invalid Password";
             }
-            registerErrorLabel.text = ErrorMsg;
             if (string.IsNullOrEmpty(ErrorMsg))
             {
-                SwitchToConfirmation();
                 AccountServices.Register(new RegisterUserRequest(registerUserName.text, registerUserEmail.text, registerUserPassword.text), OnRegisteredUser);
             }
-        }
-
-        void OnRegisteredUser(RegisteredUser userResponse)
-        {
-            Debug.Log("User has been registered: " + userResponse.Active);
-
-            confirmationStatus.text = "Verification Email has been sent to your Email";
         }
 
         public void ForgotPassword()
@@ -235,18 +171,14 @@ namespace CloudGoods.SDK.Login
             {
                 ErrorMsg = "Password reset requires valid E-mail";
             }
-            loginErrorLabel.text = ErrorMsg;
+
             if (string.IsNullOrEmpty(ErrorMsg))
             {
-                SwitchToConfirmation();
                 AccountServices.ForgotPassword(new ForgotPasswordRequest(loginUserEmail.text), OnSentPassword);
             }
         }
 
-        void OnSentPassword(StatusMessageResponse userResponse)
-        {
-            confirmationStatus.text = userResponse.message;
-        }
+
 
         public void ResendVerificationEmail()
         {
@@ -255,44 +187,24 @@ namespace CloudGoods.SDK.Login
             {
                 ErrorMsg = "Validation resend requires valid E-mail";
             }
-            loginErrorLabel.text = ErrorMsg;
+
             if (string.IsNullOrEmpty(ErrorMsg))
             {
-                SwitchToConfirmation();
-                CloseResendVerificationTab();
-                AccountServices.ResendVerificationEmail(new ResendVerificationRequest(loginUserEmail.text), OnResentVerificationEmail);
+                AccountServices.ResendVerificationEmail(new ResendVerificationRequest(loginUserEmail.text), OnResentAuthenticationEmail);
             }
 
         }
 
-        void OnResentVerificationEmail(StatusMessageResponse response)
+        public void Logout()
         {
-            confirmationStatus.text = response.message;
+            AccountServices.Logout();
+
+            if(UserLoggedOut != null)
+                UserLoggedOut(true);
         }
 
-        void OnLogout()
-        {
-            Debug.Log("User logged out");
-            SwitchToLogin();
-        }
 
         #endregion
-
-        void CallHandler_onErrorEvent(WebserviceError obj)
-        {
-            Debug.Log("ErrorOccured: " + obj.ErrorCode + "   message: " + obj.Message);
-
-            if (obj.ErrorCode == 1001 || obj.ErrorCode == 1000)
-            {
-                confirmationStatus.text = obj.Message;
-            }
-
-            if (obj.ErrorCode == 1003)
-            {
-                ResendVerificationWindow.SetActive(true);
-            }
-        }
-
 
         public bool RemoveIfNeeded()
         {
@@ -306,9 +218,6 @@ namespace CloudGoods.SDK.Login
 
             if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.Facebook || BuildPlatform.Platform == BuildPlatform.BuildPlatformType.Kongergate)
             {
-                Destroy(loginTab);
-                Destroy(registerTab);
-                Destroy(confirmationTab);
                 Destroy(this);
                 return false;
             }

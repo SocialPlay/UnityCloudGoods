@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using CloudGoods.SDK.Models;
 using CloudGoods.Services;
 
+
 namespace CloudGoods.SDK.Item
 {
     public class ItemPrefabInitilizer

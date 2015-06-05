@@ -95,9 +95,11 @@ namespace CloudGoods.Services.Webservice
         WWW GenerateWWWPost(string controller, IRequestClass dataObject, bool fullHeaders = true)
         {
             string objectString = LitJson.JsonMapper.ToJson(dataObject);
+
             Dictionary<string, string> headers = CreateHeaders(dataObject.ToHashable(), fullHeaders);
             headers.Add("Content-Type", "application/json");
             string urlString = string.Format("{0}api/CloudGoods/{1}", CloudGoodsSettings.Url, controller);
+
             byte[] body = Encoding.UTF8.GetBytes(objectString);
             return new WWW(urlString, body, headers);
         }
@@ -282,6 +284,12 @@ namespace CloudGoods.Services.Webservice
         public WWW CreatePremiumCurrencyBundlePurchaseCall(BundlePurchaseRequest request)
         {
             return GenerateWWWPost("PremiumBundlePurchase", request);
+        }
+
+
+        public WWW CreateFacebookRequestCall(FacebookCurrencyRequest request)
+        {
+            return GenerateWWWPost("FacebookCurrencyPurchaseRequest", request);
         }
     }
 }

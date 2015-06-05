@@ -11,6 +11,7 @@ namespace CloudGoods.SDK.Container
     [System.Serializable]
     public class ItemContainerManager
     {
+        public static List<ItemContainer> ItemContainers = new List<ItemContainer>();
 
         public static ContainerMoveState.ActionState AddItem(OwnedItemInformation addItem, ItemContainer targetContainer)
         {
@@ -101,6 +102,14 @@ namespace CloudGoods.SDK.Container
             }
 
             return ContainerMoveState.ActionState.No;
+        }
+
+        public static void RefreshAllPersistentItemContainers()
+        {
+            foreach (ItemContainer container in ItemContainers)
+            {
+                container.RefreshContainer();
+            }
         }
     }
 }

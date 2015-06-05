@@ -33,6 +33,7 @@ namespace CloudGoods.SDK.Container
 
         void Awake()
         {
+            ItemContainerManager.ItemContainers.Add(this);
             if (ItemLoader == null) ItemLoader = GetComponentInChildren<PersistentItemContainer>();
 
             if (GetComponent(typeof(IContainerAddAction)) == null)
@@ -187,7 +188,6 @@ namespace CloudGoods.SDK.Container
             if (ItemLoader != null)
             {
                 ItemLoader.LoadItems();
-                Clear();
             }
         }
     }

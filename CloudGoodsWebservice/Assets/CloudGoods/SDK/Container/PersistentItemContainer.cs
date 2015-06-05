@@ -47,6 +47,8 @@ namespace CloudGoods.SDK.Container
         #region Loading Items
         protected void RecivedItems(List<InstancedItemInformation> receivedItems)
         {
+            Container.Clear();
+
             foreach (InstancedItemInformation item in receivedItems)
             {
                 Container.Add(new OwnedItemInformation()

@@ -86,5 +86,7 @@ namespace CloudGoods.Services.Webservice
         WWW CreateSteamPremiumPurchaseCall(SteamPurchaseRequest request);
 
         WWW CreateSteamOrderConfirmationCall(SteamOrderConfirmationRequest request);
+
+        WWW CreateFacebookRequestCall(FacebookCurrencyRequest request);
     }
 }
