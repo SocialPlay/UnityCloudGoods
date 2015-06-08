@@ -123,10 +123,7 @@ namespace CloudGoods.SDK.Container
         {
             if (!isMoving)
             {
-                //CloudGoods.DeductStackAmount(data.stackID, -Amount, delegate(string x)
-                //{
-                //    data.isLocked = false;
-                //});
+
             }
         }
 

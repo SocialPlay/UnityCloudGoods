@@ -91,6 +91,8 @@ namespace CloudGoods.SDK.Container
             {
                 if (itemData.Amount <= 0)
                 {
+                    Debug.Log("Removed item: " + selected.gameObject.name);
+                    selected.gameObject.transform.SetParent(null);
                     currentDisplayObjects.Remove(selected);
                     Destroy(selected.gameObject);
                 }

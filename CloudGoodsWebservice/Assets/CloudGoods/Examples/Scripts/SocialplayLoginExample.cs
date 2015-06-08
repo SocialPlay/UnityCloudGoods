@@ -56,7 +56,8 @@ public class SocialplayLoginExample : MonoBehaviour {
 
     void UnityUICloudGoodsLogin_PasswordResetSent(CloudGoods.SDK.Models.StatusMessageResponse obj)
     {
-        throw new System.NotImplementedException();
+        StatusPanel.SetActive(true);
+        StatusText.text = obj.message;
     }
 
     void UnityUICloudGoodsLogin_ResentAuthentication(CloudGoods.SDK.Models.StatusMessageResponse obj)
