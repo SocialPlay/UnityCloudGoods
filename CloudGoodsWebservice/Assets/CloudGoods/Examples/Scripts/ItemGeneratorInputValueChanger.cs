@@ -8,6 +8,7 @@ public class ItemGeneratorInputValueChanger : MonoBehaviour {
 
     public void OnMinEnergyChanged(string minEnergy)
     {
+        Debug.Log("min energy: " + minEnergy);
         ItemGenerator.minEnergy = int.Parse(minEnergy);
     }
 
@@ -27,17 +28,34 @@ public class ItemGeneratorInputValueChanger : MonoBehaviour {
 
         ItemGenerator.AndTags.Clear();
         
-        //foreach
+        for(int i = 0; i < andTagsArray.Length; i++)
+        {
+            ItemGenerator.AndTags.Add(andTagsArray[i]);
+        }
     }
 
-    //public void OnMinEnergyChanged(string minEnergy)
-    //{
-    //    ItemGenerator.minEnergy = int.Parse(minEnergy);
-    //}
+    public void OnOrTagsChanged(string orTags)
+    {
+        string[] orTagsArray = orTags.Split(',');
 
-    //public void OnMinEnergyChanged(string minEnergy)
-    //{
-    //    ItemGenerator.minEnergy = int.Parse(minEnergy);
-    //}
+        ItemGenerator.OrTags.Clear();
+
+        for (int i = 0; i < orTagsArray.Length; i++)
+        {
+            ItemGenerator.OrTags.Add(orTagsArray[i]);
+        }
+    }
+
+    public void OnNotTagsChanged(string NotTags)
+    {
+        string[] notTagsArray = NotTags.Split(',');
+
+        ItemGenerator.NotTags.Clear();
+
+        for (int i = 0; i < notTagsArray.Length; i++)
+        {
+            ItemGenerator.NotTags.Add(notTagsArray[i]);
+        }
+    }
 
 }

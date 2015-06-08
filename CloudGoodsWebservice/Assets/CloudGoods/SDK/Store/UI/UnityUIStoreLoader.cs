@@ -22,6 +22,12 @@ namespace CloudGoods.SDK.Store.UI
         {
             if (isLoadingPage == false)
             {
+                if (listItems.Count <= 0)
+                {
+                    ClearCurrentGrid();
+                    return;
+                }
+
                 isLoadingPage = true;
 
                 filteredList = listItems;
