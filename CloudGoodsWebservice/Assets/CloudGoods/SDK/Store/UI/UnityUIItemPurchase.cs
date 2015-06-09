@@ -30,6 +30,8 @@ namespace CloudGoods.SDK.Store.UI
 
         public RawImage itemTexture;
 
+        public int purchaseLocation = 1;
+
         int premiumCurrencyCost = 0;
         int standardCurrencyCost = 0;
 
@@ -176,14 +178,14 @@ namespace CloudGoods.SDK.Store.UI
         public void PurchaseItemWithPremiumCurrency()
         {
             Debug.Log(int.Parse(itemQuantityAmount.text));
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Premium, 0), OnReceivedItemPurchaseConfirmation);
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Premium, purchaseLocation), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
         public void PurchaseItemWithStandardCurrency()
         {
             Debug.Log(int.Parse(itemQuantityAmount.text));
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text),PurchaseItemRequest.PaymentType.Standard, 0), OnReceivedItemPurchaseConfirmation);
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text),PurchaseItemRequest.PaymentType.Standard, purchaseLocation), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 

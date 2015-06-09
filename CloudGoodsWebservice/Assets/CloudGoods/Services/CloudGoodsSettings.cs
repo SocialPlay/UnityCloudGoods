@@ -76,7 +76,7 @@ namespace CloudGoods.Services
             {
                 if (string.IsNullOrEmpty(instance.appID))
                 {
-                    Debug.Log("Clous Goods App Id is not set correctly");
+                    Debug.Log("Cloud Goods App Id is not set correctly");
                 }
 
                 return instance.appID.Trim();

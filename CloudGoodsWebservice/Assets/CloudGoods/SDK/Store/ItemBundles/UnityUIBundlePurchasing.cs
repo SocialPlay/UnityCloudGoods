@@ -25,7 +25,7 @@ namespace CloudGoods.ItemBundles
 
         public Text BundleName;
 
-        public int purchaseContainerLocation = 0;
+        public int purchaseContainerLocation = 1;
 
         public ItemBundleInfo currentItemBundle;
 
