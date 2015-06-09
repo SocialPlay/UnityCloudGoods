@@ -35,7 +35,7 @@ namespace CloudGoods.Services.WebCommunication
             get
             {
                 if (!isInitialized)
-                    throw new Exception("Cloud Goods has not yet been initialized. Before making any webservice calls with the CloudGoods class, you must call CloudGoods.Initialize() first");
+                    throw new Exception("CallHandler has not yet been initialized. Before making any webservice calls with the CallHandler class, you must call CallHandler.Initialize() first");
                 return GetInstance();
             }
         }

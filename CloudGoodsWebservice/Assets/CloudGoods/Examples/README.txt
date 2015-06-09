@@ -9,21 +9,52 @@ developers to integrate their game with the login system.
 
 In the UnityUICloudGoodsLogin script, there are a few events that can be used to tell your system when things have happened.
 
-public static event Action<CloudGoodsUser> UserLoggedIn - This event gets fired off when a user has successfully been logged in and registered a play session.
-Gives a parameter CloudGoodsUser
+public static event Action<CloudGoodsUser> UserLoggedIn - This event gets fired off when a user has successfully been logged in and registered a play session. Sends CloudGoodsUser on the event callback so you will have various information about the user after login
+
+class CloudGoodsUser
 {
-	public string UserID = "";
-    public bool IsNewUserToWorld = false;
-    public string UserName = "";
-    public string UserEmail = "";
+	public string UserID;
+    public bool IsNewUserToWorld;
+    public string UserName;
+    public string UserEmail;
     public string SessionId;
 }
 
-so you will have the information about the user available to you after login.
 
-public static event Action<RegisteredUser> UserRegistered - This event gets fired off when 
-public static event Action<StatusMessageResponse> PasswordResetSent;
-public static event Action<StatusMessageResponse> ResentAuthentication;
+public static event Action<RegisteredUser> UserRegistered - This event gets fired off when the user has successfully registered a user to your world. It sends a RegisteredUser on the event to give you some information regarding the registered user and the status of the registration
+
+public class RegisteredUser
+{
+    public int ID;
+    public bool Active;
+    public bool Deleted;
+    public int PlatformId;
+    public string PlatformUserId;
+    public string FirstName;
+    public string LastName;
+    public string email;
+    public string password;
+    public Nullable<int> WorldID;
+}
+
+
+public static event Action<StatusMessageResponse> PasswordResetSent - This event gets fired off after an email has been successfully sent to the user requesting a password reset. Sends a StatusMEssageResponse object
+
+    public class StatusMessageResponse
+    {
+        public int code;
+        public string message;
+    }
+
+
+public static event Action<StatusMessageResponse> ResentAuthentication - This event gets fired off when the user has requested a authorization email to be resent to their email. Sends a StatusMessageResponse on the callback event.
+
+    public class StatusMessageResponse
+    {
+        public int code;
+        public string message;
+    }
+
 public static event Action<WebserviceError> ErrorOccurred;
 public static event Action<bool> UserLoggedOut;
 

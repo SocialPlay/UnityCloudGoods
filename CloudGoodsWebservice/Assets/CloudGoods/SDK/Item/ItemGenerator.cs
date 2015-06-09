@@ -43,18 +43,6 @@ namespace CloudGoods.SDK.Item
 
         public void GenerateItems()
         {
-            string andTagsString = "";
-            if (AndTags.Count > 0)
-            {
-                foreach (string tag in AndTags)
-                {
-                    andTagsString += tag + ",";
-                }
-
-                andTagsString = andTagsString.Remove(andTagsString.Length - 1);
-
-            }
-
             TagSelection tagSelection = new TagSelection()
             {
                 AndTags = AndTags,
