@@ -72,7 +72,6 @@ namespace CloudGoods.SDK.Container
 
         public virtual void ModifiedItem(OwnedItemInformation itemData, bool isSaving)
         {
-
             foreach (ItemDataDisplay display in currentDisplayObjects)
             {
                 if (display.itemObject.itemData.IsSameItemAs(itemData))
@@ -92,8 +91,10 @@ namespace CloudGoods.SDK.Container
                 if (itemData.Amount <= 0)
                 {
                     Debug.Log("Removed item: " + selected.gameObject.name);
-                    selected.gameObject.transform.SetParent(null);
                     currentDisplayObjects.Remove(selected);
+                    selected.gameObject.transform.SetParent(null);
+                    ItemContainer container = itemData.OwnerContainer;
+                    container.RefreshContainer();
                     Destroy(selected.gameObject);
                 }
             }

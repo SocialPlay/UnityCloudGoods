@@ -91,7 +91,6 @@ namespace CloudGoods.SDK.Container
 
         public static ContainerMoveState.ActionState RemoveItem(OwnedItemInformation RemoveItemData, ItemContainer TargetContainer)
         {
-
             if (RemoveItemData.IsLocked)
                 return ContainerMoveState.ActionState.No;
 

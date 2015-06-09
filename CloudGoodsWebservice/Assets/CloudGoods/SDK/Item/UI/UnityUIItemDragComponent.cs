@@ -60,6 +60,7 @@ namespace CloudGoods.SDK.Item.UI
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            Debug.Log("onEndDrag");
             //if (gameObject != null)
             //    Destroy(gameObject);
             gameObject.transform.SetParent(lastParent);
