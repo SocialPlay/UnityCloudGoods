@@ -40,12 +40,6 @@ public class RegisteredUser
 
 public static event Action<StatusMessageResponse> PasswordResetSent - This event gets fired off after an email has been successfully sent to the user requesting a password reset. Sends a StatusMEssageResponse object
 
-    public class StatusMessageResponse
-    {
-        public int code;
-        public string message;
-    }
-
 
 public static event Action<StatusMessageResponse> ResentAuthentication - This event gets fired off when the user has requested a authorization email to be resent to their email. Sends a StatusMessageResponse on the callback event.
 
@@ -55,10 +49,22 @@ public static event Action<StatusMessageResponse> ResentAuthentication - This ev
         public string message;
     }
 
-public static event Action<WebserviceError> ErrorOccurred;
-public static event Action<bool> UserLoggedOut;
+public static event Action<WebserviceError> ErrorOccurred - This event gets fired off when an error has occured when trying to process an action on the webservice, such as login, or register. Sends a Webservice Error on the event callback
+
+        public WebserviceError(int newErrorCode, string newErrorMessage)
+        {
+            ErrorCode = newErrorCode;
+            Message = newErrorMessage;
+        }
+
+
+
+public static event Action<bool> UserLoggedOut; - This event gets fired off when a user has logged off
+
 
 2. Item Containers And Generation
+
+This scene demonstrates one of our main features of the Cloud Goods SDK which allows developers to display and manage the users items that have been gained
 
 3. Item Store
 

@@ -187,7 +187,6 @@ namespace CloudGoods.Services.WebCommunication
         {
             StartCoroutine(ServiceGetString(callObjectCreator.CreateFacebookRequestCall(request), x =>
                 {
-                    Debug.Log("request : " + x);
                     callback(int.Parse(x));
                 }));
         }
