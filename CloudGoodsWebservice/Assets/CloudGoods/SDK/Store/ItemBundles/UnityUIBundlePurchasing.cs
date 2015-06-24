@@ -25,6 +25,7 @@ namespace CloudGoods.ItemBundles
 
         public Text BundleName;
 
+        public List<int> AccessLocations = new List<int>();
         public int purchaseContainerLocation = 1;
 
         public ItemBundleInfo currentItemBundle;
@@ -138,13 +139,13 @@ namespace CloudGoods.ItemBundles
 
         public void PurchaseBundleWithStandardCurrency()
         {
-            ItemStoreServices.PurchaseItemBundle(new ItemBundlePurchaseRequest(currentItemBundle.Id, (int)CurrencyType.Standard, purchaseContainerLocation), OnReceivedPurchaseCallback);
+            ItemStoreServices.PurchaseItemBundle(new ItemBundlePurchaseRequest(currentItemBundle.Id, (int)CurrencyType.Standard,AccessLocations, purchaseContainerLocation), OnReceivedPurchaseCallback);
             ClosePurchaseWindow();
         }
 
         public void PurchaseBundleWithPremiumCurrency()
         {
-            ItemStoreServices.PurchaseItemBundle(new ItemBundlePurchaseRequest(currentItemBundle.Id, (int)CurrencyType.Premium, purchaseContainerLocation), OnReceivedPurchaseCallback);
+            ItemStoreServices.PurchaseItemBundle(new ItemBundlePurchaseRequest(currentItemBundle.Id, (int)CurrencyType.Premium,AccessLocations, purchaseContainerLocation), OnReceivedPurchaseCallback);
             ClosePurchaseWindow();
         }
 
@@ -153,7 +154,7 @@ namespace CloudGoods.ItemBundles
             Debug.Log("Successfully purchased item bundle:" + response.PremiumBalance);
 
             ItemStoreServices.GetPremiumCurrencyBalance(null);
-            ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(0), null);
+            ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(null), null);
 
             if (OnPurchaseSuccessful != null)
                 OnPurchaseSuccessful(response);
