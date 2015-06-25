@@ -54,7 +54,7 @@ namespace CloudGoods.SDK.Store.UI
             else if (currencyType == CurrencyType.Standard)
             {
                 SetInactive();
-                CurrencyManager.GetStandardCurrencyBalance(0, RecivedCurrencyInfo);
+                CurrencyManager.GetStandardCurrencyBalance(null, RecivedCurrencyInfo);
               
             }
             else if (currencyType == CurrencyType.Premium)

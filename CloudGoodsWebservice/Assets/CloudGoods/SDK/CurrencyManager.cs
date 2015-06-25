@@ -6,6 +6,7 @@ using CloudGoods.SDK.Utilities;
 using CloudGoods.Enums;
 using CloudGoods.Services;
 using CloudGoods.SDK.Models;
+using System.Collections.Generic;
 
 namespace CloudGoods.SDK
 {
@@ -29,7 +30,7 @@ namespace CloudGoods.SDK
         private static Action<int> RecivecdPremiumAmount;
         private static Action<string, Texture2D> RecivedStandardDetails;
         private static Action<int> RecivecdStandardAmount;
-        private static int StandardCurrencyLoaction = 0;
+        private static List<int> StandardCurrencyLoaction = new List<int> { 0 };
 
         public static void GetPremiumCurrencyDetails(Action<string, Texture2D> callback)
         {
@@ -64,7 +65,7 @@ namespace CloudGoods.SDK
             }
         }
 
-        public static void GetStandardCurrencyBalance(int location, Action<int> callback, bool forceUpdate = true)
+        public static void GetStandardCurrencyBalance(List<int> location, Action<int> callback, bool forceUpdate = true)
         {
             StandardCurrencyLoaction = location;
             if (StandardAmount == null)
@@ -87,7 +88,7 @@ namespace CloudGoods.SDK
 
         }
 
-        public static void GetStandardCurrencyDetails(int location, Action<string, Texture2D> callback)
+        public static void GetStandardCurrencyDetails(List<int> location, Action<string, Texture2D> callback)
         {
             StandardCurrencyLoaction = location;
             if (StandardInfo == null)
@@ -102,7 +103,7 @@ namespace CloudGoods.SDK
         }
 
 
-        private static void GetWolrdCurrencyInfo(int location)
+        private static void GetWolrdCurrencyInfo(List<int> location)
         {
             if (!IsGettingWolrdCurrency)
             {
@@ -114,7 +115,7 @@ namespace CloudGoods.SDK
                         PremiumInfo = new CurrencyDetails()
                         {
                             Name = worldCurrencyInfo.PremiumCurrencyName,
-                            Icon = icon
+                            Icon = icon                            
                         };
                         if (RecivedPremiumDetails != null)
                         {

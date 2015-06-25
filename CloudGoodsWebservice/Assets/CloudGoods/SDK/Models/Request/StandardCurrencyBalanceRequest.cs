@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 namespace CloudGoods.SDK.Models
 {
 
     public class StandardCurrencyBalanceRequest : IRequestClass
     {
-        public int AccessLocation;
+        public List<int> AccessLocations;
 
         public string ToHashable()
         {
-            return AccessLocation.ToString();
+            string locations = "";
+            AccessLocations.ForEach(l => locations += l);
+            return locations;
         }
 
-        public StandardCurrencyBalanceRequest(int accessLocation)
+        public StandardCurrencyBalanceRequest(List<int> accessLocations)
         {
-            AccessLocation = accessLocation;
+            AccessLocations = accessLocations;
         }
     }
 }
