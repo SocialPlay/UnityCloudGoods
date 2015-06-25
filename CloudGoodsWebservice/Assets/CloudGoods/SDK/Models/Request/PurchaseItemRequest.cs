@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 namespace CloudGoods.SDK.Models
@@ -10,14 +11,17 @@ namespace CloudGoods.SDK.Models
         public int BuyAmount;
         public PaymentType PaymentOption;
         public int SaveLocation;
+        public List<int> AccessLocations;
         public ConsumeUponPurchase Consume = null;
 
         public string ToHashable()
         {
+            string locations = "";
+            AccessLocations.ForEach(l => locations += l);
             return string.Format("{0}{1}{2}{3}{4}", ItemId, BuyAmount, PaymentOption, SaveLocation, (Consume != null ? Consume.Amount.ToString() : ""));
         }
 
-        public PurchaseItemRequest(int itemId, int buyAmount, PaymentType paymentOption, int saveLocation, ConsumeUponPurchase consume = null)
+        public PurchaseItemRequest(int itemId, int buyAmount, PaymentType paymentOption, int saveLocation,List<int> accessLocation, ConsumeUponPurchase consume = null)
         {
             ItemId = itemId;
             BuyAmount = buyAmount;

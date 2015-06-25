@@ -6,6 +6,7 @@ using CloudGoods.SDK.Container;
 using CloudGoods.Enums;
 using CloudGoods.SDK.Models;
 using CloudGoods.Services;
+using System.Collections.Generic;
 
 namespace CloudGoods.SDK.Store.UI
 {
@@ -30,6 +31,7 @@ namespace CloudGoods.SDK.Store.UI
 
         public RawImage itemTexture;
 
+        public List<int> StandardCurrencyAccessLocations = new List<int>();
         public int purchaseLocation = 1;
 
         int premiumCurrencyCost = 0;
@@ -178,14 +180,14 @@ namespace CloudGoods.SDK.Store.UI
         public void PurchaseItemWithPremiumCurrency()
         {
             Debug.Log(int.Parse(itemQuantityAmount.text));
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Premium, purchaseLocation), OnReceivedItemPurchaseConfirmation);
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Premium, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
         public void PurchaseItemWithStandardCurrency()
         {
             Debug.Log(int.Parse(itemQuantityAmount.text));
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text),PurchaseItemRequest.PaymentType.Standard, purchaseLocation), OnReceivedItemPurchaseConfirmation);
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Standard, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
