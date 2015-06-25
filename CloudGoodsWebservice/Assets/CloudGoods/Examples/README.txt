@@ -7,68 +7,10 @@ You can also register a new user by clicking the register button. You will have 
 If at any time you forget your user's password, you can enter your users email in the email field, then click on the forgot password button. It should send an email to that user to prompt a password reset. There are various events that can be hooked onto for this system, and CloudsGoodsSDK makes it easy for
 developers to integrate their game with the login system.
 
-In the UnityUICloudGoodsLogin script, there are a few events that can be used to tell your system when things have happened.
-
-public static event Action<CloudGoodsUser> UserLoggedIn - This event gets fired off when a user has successfully been logged in and registered a play session. Sends CloudGoodsUser on the event callback so you will have various information about the user after login
-
-class CloudGoodsUser
-{
-	public string UserID;
-    public bool IsNewUserToWorld;
-    public string UserName;
-    public string UserEmail;
-    public string SessionId;
-}
-
-
-public static event Action<RegisteredUser> UserRegistered - This event gets fired off when the user has successfully registered a user to your world. It sends a RegisteredUser on the event to give you some information regarding the registered user and the status of the registration
-
-public class RegisteredUser
-{
-    public int ID;
-    public bool Active;
-    public bool Deleted;
-    public int PlatformId;
-    public string PlatformUserId;
-    public string FirstName;
-    public string LastName;
-    public string email;
-    public string password;
-    public Nullable<int> WorldID;
-}
-
-
-public static event Action<StatusMessageResponse> PasswordResetSent - This event gets fired off after an email has been successfully sent to the user requesting a password reset. Sends a StatusMEssageResponse object
-
-
-public static event Action<StatusMessageResponse> ResentAuthentication - This event gets fired off when the user has requested a authorization email to be resent to their email. Sends a StatusMessageResponse on the callback event.
-
-    public class StatusMessageResponse
-    {
-        public int code;
-        public string message;
-    }
-
-public static event Action<WebserviceError> ErrorOccurred - This event gets fired off when an error has occured when trying to process an action on the webservice, such as login, or register. Sends a Webservice Error on the event callback
-
-        public WebserviceError(int newErrorCode, string newErrorMessage)
-        {
-            ErrorCode = newErrorCode;
-            Message = newErrorMessage;
-        }
-
-
-
-public static event Action<bool> UserLoggedOut; - This event gets fired off when a user has logged off
-
-
 2. Item Containers And Generation
 
 This scene demonstrates one of our main features of the Cloud Goods SDK which allows developers to display and manage the users items. It also demonstrates a way that the game can give users items in a point and click method. There are a few key components 
 in the item container part of this scene that developers will notice and can implement on their own or use the templated prefabs given with the SDK
-
-
-
 
 3. Item Store
 
