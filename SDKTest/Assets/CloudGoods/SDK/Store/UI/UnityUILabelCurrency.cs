@@ -58,7 +58,7 @@ namespace CloudGoods.SDK.Store.UI
             mLabel = GetComponent<Text>();
             if (type == CurrencyType.Standard)
             {
-                CurrencyManager.GetStandardCurrencyBalance(0, SetCurrencyLabel);
+                CurrencyManager.GetStandardCurrencyBalance(null, SetCurrencyLabel);
             }
             else if (type == CurrencyType.Premium)
             {
