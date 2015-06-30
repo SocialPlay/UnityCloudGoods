@@ -13,7 +13,7 @@ namespace CloudGoods.SDK.Store.UI
     {
 
         public CurrencyType type = CurrencyType.Standard;
-        public List<int> StandardCurrencyAccessLocation = new List<int>();
+        public List<int> StandardCurrencyAccessLocation = null;
         RawImage mTexture;      
 
 

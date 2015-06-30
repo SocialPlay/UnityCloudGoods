@@ -30,7 +30,7 @@ namespace CloudGoods.SDK
         private static Action<int> RecivecdPremiumAmount;
         private static Action<string, Texture2D> RecivedStandardDetails;
         private static Action<int> RecivecdStandardAmount;
-        private static List<int> StandardCurrencyLoaction = new List<int> { 0 };
+        private static List<int> StandardCurrencyLoaction =null;
 
         public static void GetPremiumCurrencyDetails(Action<string, Texture2D> callback)
         {
@@ -76,9 +76,10 @@ namespace CloudGoods.SDK
             else if (forceUpdate)
             {
                 ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), balance =>
-                {
+                {                    
                     StandardAmount = balance.Total;
                     callback(StandardAmount.GetValueOrDefault(0));
+                    Debug.Log(StandardAmount);
                 });
             }
             else
@@ -143,9 +144,8 @@ namespace CloudGoods.SDK
                             RecivedStandardDetails(StandardInfo.Name, StandardInfo.Icon);
                         }
                     });
-
                     ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), standardCurrencybalance =>
-                    {
+                    {  
                         StandardAmount = standardCurrencybalance.Total;
                         if (RecivecdStandardAmount != null)
                         {

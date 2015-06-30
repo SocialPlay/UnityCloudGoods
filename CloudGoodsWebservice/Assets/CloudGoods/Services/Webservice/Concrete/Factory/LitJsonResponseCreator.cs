@@ -72,8 +72,7 @@ namespace CloudGoods.Services.Webservice
         }
 
         public StandardCurrencyBalanceResponse CreateStandardCurrencyBalanceResponse(string responseData)
-        {
-            Debug.Log("Standard Currency Balance" + " , " + responseData);
+        {       
             return JsonMapper.ToObject<StandardCurrencyBalanceResponse>(responseData);
         }
 
