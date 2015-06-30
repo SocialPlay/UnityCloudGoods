@@ -50,12 +50,8 @@ namespace CloudGoods.SDK.Store.UI
         {
             int quantityAmount = int.Parse(itemQuantityAmount.text);
 
-            Debug.Log("Quantity amount : " + quantityAmount);
-
             if (quantityAmount > 1)
                 quantityAmount--;
-
-            Debug.Log("Quantity amount after: " + quantityAmount);
 
             ChangeAmountDisplay(quantityAmount);
         }
@@ -187,14 +183,12 @@ namespace CloudGoods.SDK.Store.UI
 
         public void PurchaseItemWithPremiumCurrency()
         {
-            Debug.Log(int.Parse(itemQuantityAmount.text));
             ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Premium, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
         public void PurchaseItemWithStandardCurrency()
         {
-            Debug.Log(int.Parse(itemQuantityAmount.text));
             ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Standard, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
@@ -218,7 +212,6 @@ namespace CloudGoods.SDK.Store.UI
                 }
             }
         }
-
 
         public void ClosePanel()
         {
