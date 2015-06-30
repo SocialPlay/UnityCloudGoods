@@ -44,6 +44,7 @@ public class FacebookSettingsEditor : Editor
         AndroidUtilGUI();
         IOSUtilGUI();
         AboutGUI();
+        BuildGUI();
     }
 
     private void AppIdGUI()
@@ -178,7 +179,7 @@ public class FacebookSettingsEditor : Editor
 
     private void AboutGUI()
     {
-        var versionInfo = FBBuildVersionAttribute.GetVersionAttributeOfType(typeof(IFacebook));
+        var versionInfo = FBBuildVersionAttribute.GetVersionAttributeOfType(typeof(AbstractFacebook));
         if (versionInfo == null)
         {
             EditorGUILayout.HelpBox("Cannot find version info on the Facebook SDK!", MessageType.Warning);
@@ -198,5 +199,20 @@ public class FacebookSettingsEditor : Editor
         EditorGUILayout.LabelField(label, GUILayout.Width(180), GUILayout.Height(16));
         EditorGUILayout.SelectableLabel(value, GUILayout.Height(16));
         EditorGUILayout.EndHorizontal();
+    }
+
+    private void BuildGUI()
+    {
+        if (GUILayout.Button("Build SDK Package")) {
+            try
+            {
+                FacebookBuild.ExportPackage();
+            }
+            catch (System.Exception e)
+            {
+                EditorUtility.DisplayDialog("Error Exporting unityPackage", e.Message, "Okay");
+            }
+            EditorUtility.DisplayDialog("Finished Exporting unityPackage", "Exported to CUI/SDKPackage", "Okay");
+        }
     }
 }

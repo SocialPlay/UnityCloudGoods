@@ -76,7 +76,7 @@ public class FBSettings : ScriptableObject
     [MenuItem("Facebook/Report a SDK Bug")]
     public static void ReportABug()
     {
-        string url = "https://developers.facebook.com/bugs/create";
+        string url = "https://developers.facebook.com/bugs";
         Application.OpenURL(url);
     }
 #endif

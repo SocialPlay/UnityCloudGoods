@@ -82,15 +82,12 @@ namespace CloudGoods.SDK.Store.UI
 
         private void ChangePurchaseButtonDisplay(int itemCreditCost, int itemCoinCost)
         {
-            StandardCurrencyFullWindow.SetActive(false);
-            StandardCurrencyHalfWindow.SetActive(false);
-            PremiumCurrencyFullWindow.SetActive(false);
-            PremiumCurrencyHalfWindow.SetActive(false);
-
             if (itemCreditCost > 0 && itemCoinCost > 0)
             {
                 StandardCurrencyHalfWindow.SetActive(true);
                 PremiumCurrencyHalfWindow.SetActive(true);
+                StandardCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay freeButtonDisplay = StandardCurrencyHalfWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 freeButtonDisplay.SetState(itemCoinCost);
@@ -100,20 +97,29 @@ namespace CloudGoods.SDK.Store.UI
             else if (itemCreditCost < 0 && itemCoinCost < 0)
             {
                 StandardCurrencyFullWindow.SetActive(true);
+                StandardCurrencyHalfWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyHalfWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay StandardOnlyButtonDisplay = StandardCurrencyFullWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 StandardOnlyButtonDisplay.SetState(0);
             }
-            else if (itemCreditCost < 0)
+            else if (itemCreditCost < 0 && itemCoinCost > 0)
             {
                 StandardCurrencyFullWindow.SetActive(true);
+                StandardCurrencyHalfWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyHalfWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay StandardOnlyButtonDisplay = StandardCurrencyFullWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 StandardOnlyButtonDisplay.SetState(itemCoinCost);
             }
-            else if (itemCoinCost < 0)
+            else if (itemCoinCost < 0 && itemCreditCost > 0)
             {
                 PremiumCurrencyFullWindow.SetActive(true);
+                StandardCurrencyFullWindow.SetActive(false);
+                StandardCurrencyHalfWindow.SetActive(false);
+                PremiumCurrencyHalfWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay PremiumOnlyButtonDisplay = PremiumCurrencyFullWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 PremiumOnlyButtonDisplay.SetState(itemCreditCost);
@@ -122,6 +128,8 @@ namespace CloudGoods.SDK.Store.UI
             {
                 PremiumCurrencyHalfWindow.SetActive(true);
                 StandardCurrencyHalfWindow.SetActive(true);
+                StandardCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay PremiumButtonDisplay = PremiumCurrencyHalfWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 UnityUIPurchaseButtonDisplay StandardButtonDisplay = StandardCurrencyHalfWindow.GetComponent<UnityUIPurchaseButtonDisplay>();

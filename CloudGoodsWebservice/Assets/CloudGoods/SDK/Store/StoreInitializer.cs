@@ -34,8 +34,6 @@ namespace CloudGoods.SDK.Store
             }
 
             OnInitializedStoreItems(storeItems);
-
-            //StoreLoader.LoadStoreWithPaging(newStoreItems, 0);
         }
 
     }
