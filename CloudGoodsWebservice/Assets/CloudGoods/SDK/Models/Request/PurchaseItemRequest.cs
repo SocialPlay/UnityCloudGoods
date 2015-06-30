@@ -17,11 +17,12 @@ namespace CloudGoods.SDK.Models
         public string ToHashable()
         {
             string locations = "";
-            AccessLocations.ForEach(l => locations += l);
+            if (AccessLocations != null)
+                AccessLocations.ForEach(l => locations += l);
             return string.Format("{0}{1}{2}{3}{4}", ItemId, BuyAmount, PaymentOption, SaveLocation, (Consume != null ? Consume.Amount.ToString() : ""));
         }
 
-        public PurchaseItemRequest(int itemId, int buyAmount, PaymentType paymentOption, int saveLocation,List<int> accessLocation, ConsumeUponPurchase consume = null)
+        public PurchaseItemRequest(int itemId, int buyAmount, PaymentType paymentOption, int saveLocation, List<int> accessLocation, ConsumeUponPurchase consume = null)
         {
             ItemId = itemId;
             BuyAmount = buyAmount;

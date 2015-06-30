@@ -11,7 +11,8 @@ namespace CloudGoods.SDK.Models
         public string ToHashable()
         {
             string locations = "";
-            AccessLocations.ForEach(l => locations += l);
+            if (AccessLocations != null)
+                AccessLocations.ForEach(l => locations += l);
             return locations;
         }
 

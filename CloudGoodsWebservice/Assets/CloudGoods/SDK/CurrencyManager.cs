@@ -75,9 +75,9 @@ namespace CloudGoods.SDK
             }
             else if (forceUpdate)
             {
-                ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), item =>
+                ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), balance =>
                 {
-                    StandardAmount = item.Amount;
+                    StandardAmount = balance.Total;
                     callback(StandardAmount.GetValueOrDefault(0));
                 });
             }
@@ -144,12 +144,12 @@ namespace CloudGoods.SDK
                         }
                     });
 
-                    ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), standardCurrencyItem =>
+                    ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), standardCurrencybalance =>
                     {
-                        StandardAmount = standardCurrencyItem.Amount;
+                        StandardAmount = standardCurrencybalance.Total;
                         if (RecivecdStandardAmount != null)
                         {
-                            RecivecdStandardAmount(standardCurrencyItem.Amount);
+                            RecivecdStandardAmount(standardCurrencybalance.Total);
                         }
                     });
                 });
