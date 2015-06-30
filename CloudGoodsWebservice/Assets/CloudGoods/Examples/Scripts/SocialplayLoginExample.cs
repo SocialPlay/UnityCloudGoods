@@ -77,7 +77,7 @@ public class SocialplayLoginExample : MonoBehaviour {
         else
         {
             StatusPanel.SetActive(true);
-            StatusText.text = "Error has occured: " + obj.Message + " Error Code: " + obj.ErrorCode;
+            StatusText.text = obj.Message;
 
             ResendAuthenticationPanel.SetActive(false);
         }

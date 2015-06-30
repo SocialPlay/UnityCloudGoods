@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using CloudGoods.Enums;
 using CloudGoods.SDK;
+using CloudGoods.Services;
 
 namespace CloudGoods.SDK.Store.UI
 {
@@ -54,13 +55,13 @@ namespace CloudGoods.SDK.Store.UI
             else if (currencyType == CurrencyType.Standard)
             {
                 SetInactive();
-                CurrencyManager.GetStandardCurrencyBalance(null, RecivedCurrencyInfo);
+                CurrencyManager.GetStandardCurrencyBalance(null, RecivedCurrencyInfo, false);
               
             }
             else if (currencyType == CurrencyType.Premium)
             {
                 SetInactive();
-                CurrencyManager.GetPremiumCurrencyBalance( RecivedCurrencyInfo);
+                CurrencyManager.GetPremiumCurrencyBalance(RecivedCurrencyInfo, false);
             }
         }
 
