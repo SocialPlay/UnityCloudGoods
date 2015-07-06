@@ -183,13 +183,26 @@ namespace CloudGoods.SDK.Store.UI
 
         public void PurchaseItemWithPremiumCurrency()
         {
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Premium, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
+            PurchaseItemRequest.PaymentType paymentType;
+            if (premiumCurrencyCost > 0)
+                paymentType = PurchaseItemRequest.PaymentType.Premium;
+            else
+                paymentType = PurchaseItemRequest.PaymentType.Free;
+
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), paymentType, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
         public void PurchaseItemWithStandardCurrency()
         {
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Standard, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
+            PurchaseItemRequest.PaymentType paymentType;
+            if (standardCurrencyCost > 0)
+                paymentType = PurchaseItemRequest.PaymentType.Standard;
+            else
+                paymentType = PurchaseItemRequest.PaymentType.Free;
+
+
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), paymentType, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
