@@ -50,6 +50,7 @@ namespace CloudGoods.Services
 
         public static void GetPremiumBundles(PremiumBundlesRequest request, Action<List<PremiumCurrencyBundle>> callback)
         {
+            Debug.Log("get premium");
             CallHandler.Instance.PremiumBundles(request, callback);
         }
 

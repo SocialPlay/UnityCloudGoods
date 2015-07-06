@@ -109,18 +109,18 @@ namespace CloudGoods.SDK
                 IsGettingWolrdCurrency = true;
                 ItemStoreServices.GetCurrencyInfo(worldCurrencyInfo =>
                 {
-                    ItemTextureCache.GetItemTexture(worldCurrencyInfo.PremiumCurrencyImage, icon =>
-                    {
-                        PremiumInfo = new CurrencyDetails()
-                        {
-                            Name = worldCurrencyInfo.PremiumCurrencyName,
-                            Icon = icon
-                        };
-                        if (RecivedPremiumDetails != null)
-                        {
-                            RecivedPremiumDetails(PremiumInfo.Name, PremiumInfo.Icon);
-                        }
-                    });
+                    //ItemTextureCache.GetItemTexture(worldCurrencyInfo.PremiumCurrencyImage, icon =>
+                    //{
+                    //    PremiumInfo = new CurrencyDetails()
+                    //    {
+                    //        Name = worldCurrencyInfo.PremiumCurrencyName,
+                    //        Icon = icon
+                    //    };
+                    //    if (RecivedPremiumDetails != null)
+                    //    {
+                    //        RecivedPremiumDetails(PremiumInfo.Name, PremiumInfo.Icon);
+                    //    }
+                    //});
                     ItemStoreServices.GetPremiumCurrencyBalance(premiumCurrencyResponse =>
                     {
                         PremiumAmount = premiumCurrencyResponse.Amount;
@@ -130,27 +130,27 @@ namespace CloudGoods.SDK
                         }
                     });
 
-                    ItemTextureCache.GetItemTexture(worldCurrencyInfo.StandardCurrencyImage, icon =>
-                    {
-                        StandardInfo = new CurrencyDetails()
-                        {
-                            Name = worldCurrencyInfo.StandardCurrencyName,
-                            Icon = icon
-                        };
-                        if (RecivedStandardDetails != null)
-                        {
-                            RecivedStandardDetails(StandardInfo.Name, StandardInfo.Icon);
-                        }
-                    });
+                    //ItemTextureCache.GetItemTexture(worldCurrencyInfo.StandardCurrencyImage, icon =>
+                    //{
+                    //    StandardInfo = new CurrencyDetails()
+                    //    {
+                    //        Name = worldCurrencyInfo.StandardCurrencyName,
+                    //        Icon = icon
+                    //    };
+                    //    if (RecivedStandardDetails != null)
+                    //    {
+                    //        RecivedStandardDetails(StandardInfo.Name, StandardInfo.Icon);
+                    //    }
+                    //});
 
-                    ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), standardCurrencyItem =>
-                    {
-                        StandardAmount = standardCurrencyItem.Amount;
-                        if (RecivecdStandardAmount != null)
-                        {
-                            RecivecdStandardAmount(standardCurrencyItem.Amount);
-                        }
-                    });
+                    //ItemStoreServices.GetStandardCurrencyBalance(new StandardCurrencyBalanceRequest(StandardCurrencyLoaction), standardCurrencyItem =>
+                    //{
+                    //    StandardAmount = standardCurrencyItem.Amount;
+                    //    if (RecivecdStandardAmount != null)
+                    //    {
+                    //        RecivecdStandardAmount(standardCurrencyItem.Amount);
+                    //    }
+                    //});
                 });
             }
         }

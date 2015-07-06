@@ -29,7 +29,8 @@ namespace CloudGoods.SDK.Store.UI
 
         void SetCurrencyLabel(string name, Texture2D icon)
         {
-            mTexture.texture = icon;
+            if(mTexture != null)
+                mTexture.texture = icon;
         }
     }
 }

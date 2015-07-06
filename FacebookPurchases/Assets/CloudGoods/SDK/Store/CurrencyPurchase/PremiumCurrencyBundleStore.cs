@@ -76,28 +76,28 @@ namespace CloudGoods.CurrencyPurchase
                     break;
             }
 
-            if (platformPurchasor == null)
-            {
-                Debug.Log("platform purchasor is null");
-                return;
-            }
+            //if (platformPurchasor == null)
+            //{
+            //    Debug.Log("platform purchasor is null");
+            //    return;
+            ////}
 
-            platformPurchasor.RecievedPurchaseResponse += OnRecievedPurchaseResponse;
-            platformPurchasor.OnPurchaseErrorEvent += platformPurchasor_OnPurchaseErrorEvent;
+            //platformPurchasor.RecievedPurchaseResponse += OnRecievedPurchaseResponse;
+            //platformPurchasor.OnPurchaseErrorEvent += platformPurchasor_OnPurchaseErrorEvent;
 
-            if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.EditorTestPurchasing)
-            {
-                Debug.Log("Get credit bundles from editor");
+            //if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.EditorTestPurchasing)
+            //{
+            //    Debug.Log("Get credit bundles from editor");
 
-                ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest(1), OnPurchaseBundlesRecieved);
-            }
-            else
-            {
-                Debug.Log("Purchasing credit bundles from platform:" + BuildPlatform.Platform);
+            //    ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest(1), OnPurchaseBundlesRecieved);
+            //}
+            //else
+            //{
+            //    Debug.Log("Purchasing credit bundles from platform:" + BuildPlatform.Platform);
                 ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest((int)BuildPlatform.Platform), OnPurchaseBundlesRecieved);
-            }
+            //}
 
-            isInitialized = true;
+            //isInitialized = true;
         }
 
 
@@ -109,8 +109,6 @@ namespace CloudGoods.CurrencyPurchase
         void OnPurchaseBundlesRecieved(List<PremiumCurrencyBundle> data)
         {
             Debug.Log("purchase bundles: " + data);
-
-            Debug.Log("Got credit bundles");
             gridLoader = (IGridLoader)Grid.GetComponent(typeof(IGridLoader));
             gridLoader.ItemAdded += OnItemInGrid;
             gridLoader.LoadGrid(data);

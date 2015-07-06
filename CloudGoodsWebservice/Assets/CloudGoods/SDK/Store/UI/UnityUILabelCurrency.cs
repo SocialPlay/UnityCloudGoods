@@ -22,6 +22,8 @@ namespace CloudGoods.SDK.Store.UI
             UnityUIItemPurchase.OnPurchasedItem += UnityUIItemPurchase_OnPurchasedItem;
             PremiumCurrencyBundleStore.OnPremiumCurrencyPurchased += PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased;
             UnityUIBundlePurchasing.OnPurchaseSuccessful += ItemBundlePurchaseSuccess;
+
+            UpdateLabels();
         }
 
         void OnDisable()
@@ -45,13 +47,6 @@ namespace CloudGoods.SDK.Store.UI
         {
             UpdateLabels();
         }
-
-
-        void Start()
-        {
-            UpdateLabels();
-        }
-
 
         void UpdateLabels()
         {
