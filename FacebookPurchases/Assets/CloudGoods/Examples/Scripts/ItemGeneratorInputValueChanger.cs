@@ -8,17 +8,29 @@ public class ItemGeneratorInputValueChanger : MonoBehaviour {
 
     public void OnMinEnergyChanged(string minEnergy)
     {
-        Debug.Log("min energy: " + minEnergy);
+        Debug.Log("min energy change: " + minEnergy);
+
+        if (string.IsNullOrEmpty(minEnergy))
+            return;
+
         ItemGenerator.minEnergy = int.Parse(minEnergy);
     }
 
     public void OnMaxEnergyChanged(string maxEnergy)
     {
+        Debug.Log("max energy change: " + maxEnergy);
+
+        if (string.IsNullOrEmpty(maxEnergy))
+            return;
+
         ItemGenerator.maxEnergy = int.Parse(maxEnergy);
     }
 
     public void OnTotalEnergyChanged(string totalEnergy)
     {
+        if (string.IsNullOrEmpty(totalEnergy))
+            return;
+
         ItemGenerator.TotalEnergyToGenerate = int.Parse(totalEnergy);
     }
 

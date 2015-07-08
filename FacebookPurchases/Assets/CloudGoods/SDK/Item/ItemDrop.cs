@@ -31,7 +31,6 @@ namespace CloudGoods.SDK.Item
 
                 else
                     dropPosition = DropItem(item, dropPosition, dropModelDefault, null, item.Amount);
-
             }
         }
 
@@ -39,6 +38,7 @@ namespace CloudGoods.SDK.Item
         {
             GameObject dropObject = GameObject.Instantiate(bundleObj != null ? bundleObj : dropModelDefault) as GameObject;
 
+            InsertToContainerOnClick insertClickComponent = dropObject.AddComponent<InsertToContainerOnClick>();
             ItemVoucherComponent voucherComponent = dropObject.AddComponent<ItemVoucherComponent>();
             voucherComponent.voucherInformation = item;
 

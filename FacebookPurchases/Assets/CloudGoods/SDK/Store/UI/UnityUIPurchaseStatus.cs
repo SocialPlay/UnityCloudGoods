@@ -5,7 +5,6 @@ using CloudGoods.Services;
 using CloudGoods.Services.WebCommunication;
 using CloudGoods.SDK.Models;
 using CloudGoods.ItemBundles;
-using CloudGoods.CurrencyPurchase;
 
 namespace CloudGoods.SDK.Store.UI
 {
@@ -19,21 +18,7 @@ namespace CloudGoods.SDK.Store.UI
         {
             UnityUIItemPurchase.OnPurchasedItem += UnityUIItemPurchase_OnPurchasedItem;
             UnityUIBundlePurchasing.OnPurchaseSuccessful += UnityUIBundlePurchaseSuccessful;
-            PremiumCurrencyBundleStore.OnPremiumCurrencyPurchased += PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased;
             CallHandler.IsError += CallHandler_IsError;
-            PremiumCurrencyBundleStore.OnPurchaseErrorEvent += PremiumCurrencyBundleStore_OnPurchaseErrorEvent;
-        }
-
-        void PremiumCurrencyBundleStore_OnPurchaseErrorEvent(string obj)
-        {
-            purchasePopup.SetActive(true);
-            purchasePopup.GetComponentInChildren<Text>().text = "Purchase Cancelled";
-        }
-
-        void PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased(PurchasePremiumCurrencyBundleResponse obj)
-        {
-            purchasePopup.SetActive(true);
-            purchasePopup.GetComponentInChildren<Text>().text = "Purchase Successful";
         }
 
         void CallHandler_IsError(SDK.Models.WebserviceError obj)

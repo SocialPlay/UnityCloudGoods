@@ -14,12 +14,12 @@ namespace CloudGoods.Services
             CallHandler.Instance.GetCurrencyInfo(callback);
         }
 
-        public static void GetPremiumCurrencyBalance(Action<CurrencyBalanceResponse> callback)
+        public static void GetPremiumCurrencyBalance(Action<PremiumCurrencyBalanceResponse> callback)
         {
             CallHandler.Instance.GetPremiumCurrencyBalance(callback);
         }
 
-        public static void GetStandardCurrencyBalance(StandardCurrencyBalanceRequest request, Action<SimpleItemInfo> callback)
+        public static void GetStandardCurrencyBalance(StandardCurrencyBalanceRequest request, Action<StandardCurrencyBalanceResponse> callback)
         {
             CallHandler.Instance.GetStandardCurrencyBalance(request, callback);
         }
@@ -50,7 +50,6 @@ namespace CloudGoods.Services
 
         public static void GetPremiumBundles(PremiumBundlesRequest request, Action<List<PremiumCurrencyBundle>> callback)
         {
-            Debug.Log("get premium");
             CallHandler.Instance.PremiumBundles(request, callback);
         }
 

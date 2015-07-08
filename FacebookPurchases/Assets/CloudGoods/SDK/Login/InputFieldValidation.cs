@@ -21,18 +21,10 @@ namespace CloudGoods.SDK.Login
         {
             if (Validate(uiInput.text, isSecondcheck))
             {
-                foreach (Text sprite in uiInput.GetComponentsInChildren<Text>())
-                {
-                    sprite.color = Color.white;
-                }
                 return true;
             }
             else
             {
-                foreach (Text sprite in uiInput.GetComponentsInChildren<Text>())
-                {
-                    sprite.color = Color.red;
-                }
                 return false;
             }
         }

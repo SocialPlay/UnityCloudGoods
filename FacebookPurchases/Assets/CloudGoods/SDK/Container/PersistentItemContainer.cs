@@ -112,7 +112,6 @@ namespace CloudGoods.SDK.Container
         
                 ItemManipulationServices.MoveItem(new MoveItemsRequest(new MoveItemsRequest.MoveOrder(data.StackLocationId, data.Amount, Location)), x =>
                 {
-                    Debug.Log(x.UpdatedStackIds[0].StackId);
                     data.StackLocationId = x.UpdatedStackIds[0].StackId;
                     data.IsLocked = false;
                 });
