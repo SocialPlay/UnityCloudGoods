@@ -3,18 +3,22 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventSystemChecker : MonoBehaviour
+
+namespace CloudGoods.SDK.Example.Menu
 {
-    public GameObject eventSystem;
+    public class EventSystemChecker : MonoBehaviour
+    {
+        public GameObject eventSystem;
 
-	// Use this for initialization
-	IEnumerator Start ()
-	{
-	    yield return new WaitForEndOfFrame();
-
-        if (!FindObjectOfType<EventSystem>())
+        // Use this for initialization
+        IEnumerator Start()
         {
-           Instantiate(eventSystem);
+            yield return new WaitForEndOfFrame();
+
+            if (!FindObjectOfType<EventSystem>())
+            {
+                Instantiate(eventSystem);
+            }
         }
-	}
+    }
 }
