@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using CloudGoods.SDK.Models;
 using CloudGoods.Services;
+using SocialPlay.Bundles;
 
 namespace CloudGoods.SDK.Item
 {
@@ -34,7 +35,20 @@ namespace CloudGoods.SDK.Item
         {
             foreach (VoucherItemInformation dropItem in dropItems)
             {
-                gameItemDrop.DropItemIntoWorld(dropItem, dropTransform.position, CloudGoodsSettings.DefaultItemDrop, IsDropSingleAmount);
+
+                if (!string.IsNullOrEmpty(dropItem.Information.AssetBundleURL))
+                {
+                    BundleSystem.Get(dropItem.Information.AssetBundleURL, x =>
+                        {
+                            if (x != null)
+                                gameItemDrop.DropItemIntoWorld(dropItem, dropTransform.position, (GameObject)x, IsDropSingleAmount);
+                            else
+                                gameItemDrop.DropItemIntoWorld(dropItem, dropTransform.position, CloudGoodsSettings.DefaultItemDrop, IsDropSingleAmount);
+                        });
+                }
+                else
+                    gameItemDrop.DropItemIntoWorld(dropItem, dropTransform.position, CloudGoodsSettings.DefaultItemDrop, IsDropSingleAmount);
+
             }
         }
     }

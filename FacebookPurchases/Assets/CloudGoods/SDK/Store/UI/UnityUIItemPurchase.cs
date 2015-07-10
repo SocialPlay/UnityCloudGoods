@@ -6,6 +6,7 @@ using CloudGoods.SDK.Container;
 using CloudGoods.Enums;
 using CloudGoods.SDK.Models;
 using CloudGoods.Services;
+using System.Collections.Generic;
 
 namespace CloudGoods.SDK.Store.UI
 {
@@ -30,6 +31,7 @@ namespace CloudGoods.SDK.Store.UI
 
         public RawImage itemTexture;
 
+        public List<int> StandardCurrencyAccessLocations = new List<int>();
         public int purchaseLocation = 1;
 
         int premiumCurrencyCost = 0;
@@ -48,12 +50,8 @@ namespace CloudGoods.SDK.Store.UI
         {
             int quantityAmount = int.Parse(itemQuantityAmount.text);
 
-            Debug.Log("Quantity amount : " + quantityAmount);
-
             if (quantityAmount > 1)
                 quantityAmount--;
-
-            Debug.Log("Quantity amount after: " + quantityAmount);
 
             ChangeAmountDisplay(quantityAmount);
         }
@@ -80,15 +78,12 @@ namespace CloudGoods.SDK.Store.UI
 
         private void ChangePurchaseButtonDisplay(int itemCreditCost, int itemCoinCost)
         {
-            StandardCurrencyFullWindow.SetActive(false);
-            StandardCurrencyHalfWindow.SetActive(false);
-            PremiumCurrencyFullWindow.SetActive(false);
-            PremiumCurrencyHalfWindow.SetActive(false);
-
             if (itemCreditCost > 0 && itemCoinCost > 0)
             {
                 StandardCurrencyHalfWindow.SetActive(true);
                 PremiumCurrencyHalfWindow.SetActive(true);
+                StandardCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay freeButtonDisplay = StandardCurrencyHalfWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 freeButtonDisplay.SetState(itemCoinCost);
@@ -98,20 +93,29 @@ namespace CloudGoods.SDK.Store.UI
             else if (itemCreditCost < 0 && itemCoinCost < 0)
             {
                 StandardCurrencyFullWindow.SetActive(true);
+                StandardCurrencyHalfWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyHalfWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay StandardOnlyButtonDisplay = StandardCurrencyFullWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 StandardOnlyButtonDisplay.SetState(0);
             }
-            else if (itemCreditCost < 0)
+            else if (itemCreditCost < 0 && itemCoinCost > 0)
             {
                 StandardCurrencyFullWindow.SetActive(true);
+                StandardCurrencyHalfWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyHalfWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay StandardOnlyButtonDisplay = StandardCurrencyFullWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 StandardOnlyButtonDisplay.SetState(itemCoinCost);
             }
-            else if (itemCoinCost < 0)
+            else if (itemCoinCost < 0 && itemCreditCost > 0)
             {
                 PremiumCurrencyFullWindow.SetActive(true);
+                StandardCurrencyFullWindow.SetActive(false);
+                StandardCurrencyHalfWindow.SetActive(false);
+                PremiumCurrencyHalfWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay PremiumOnlyButtonDisplay = PremiumCurrencyFullWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 PremiumOnlyButtonDisplay.SetState(itemCreditCost);
@@ -120,6 +124,8 @@ namespace CloudGoods.SDK.Store.UI
             {
                 PremiumCurrencyHalfWindow.SetActive(true);
                 StandardCurrencyHalfWindow.SetActive(true);
+                StandardCurrencyFullWindow.SetActive(false);
+                PremiumCurrencyFullWindow.SetActive(false);
 
                 UnityUIPurchaseButtonDisplay PremiumButtonDisplay = PremiumCurrencyHalfWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
                 UnityUIPurchaseButtonDisplay StandardButtonDisplay = StandardCurrencyHalfWindow.GetComponent<UnityUIPurchaseButtonDisplay>();
@@ -177,15 +183,26 @@ namespace CloudGoods.SDK.Store.UI
 
         public void PurchaseItemWithPremiumCurrency()
         {
-            Debug.Log(int.Parse(itemQuantityAmount.text));
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), PurchaseItemRequest.PaymentType.Premium, purchaseLocation), OnReceivedItemPurchaseConfirmation);
+            PurchaseItemRequest.PaymentType paymentType;
+            if (premiumCurrencyCost > 0)
+                paymentType = PurchaseItemRequest.PaymentType.Premium;
+            else
+                paymentType = PurchaseItemRequest.PaymentType.Free;
+
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), paymentType, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
         public void PurchaseItemWithStandardCurrency()
         {
-            Debug.Log(int.Parse(itemQuantityAmount.text));
-            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text),PurchaseItemRequest.PaymentType.Standard, purchaseLocation), OnReceivedItemPurchaseConfirmation);
+            PurchaseItemRequest.PaymentType paymentType;
+            if (standardCurrencyCost > 0)
+                paymentType = PurchaseItemRequest.PaymentType.Standard;
+            else
+                paymentType = PurchaseItemRequest.PaymentType.Free;
+
+
+            ItemStoreServices.PurchaseItem(new PurchaseItemRequest(itemInfo.storeItem.ItemId, int.Parse(itemQuantityAmount.text), paymentType, purchaseLocation, StandardCurrencyAccessLocations), OnReceivedItemPurchaseConfirmation);
             ClosePanel();
         }
 
@@ -208,7 +225,6 @@ namespace CloudGoods.SDK.Store.UI
                 }
             }
         }
-
 
         public void ClosePanel()
         {

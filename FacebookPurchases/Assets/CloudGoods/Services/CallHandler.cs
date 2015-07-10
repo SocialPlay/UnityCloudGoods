@@ -199,21 +199,21 @@ namespace CloudGoods.Services.WebCommunication
             }));
         }
 
-        public void GetPremiumCurrencyBalance(Action<CurrencyBalanceResponse> callback)
+        public void GetPremiumCurrencyBalance(Action<PremiumCurrencyBalanceResponse> callback)
         {
             Instance.StartCoroutine(ServiceGetString(callObjectCreator.CreatePremiumCurrencyBalanceCall(new PremiumCurrencyBalanceRequest()), x =>
                 {
                     if(callback != null)
-                        callback(responseCreator.CreateCurrencyBalanceResponse(x));
+                        callback(responseCreator.CreatePremiumCurrencyBalanceResponse(x));
                 }));
         }
 
-        public void GetStandardCurrencyBalance(StandardCurrencyBalanceRequest request, Action<SimpleItemInfo> callback)
+        public void GetStandardCurrencyBalance(StandardCurrencyBalanceRequest request, Action<StandardCurrencyBalanceResponse> callback)
         {
             Instance.StartCoroutine(ServiceGetString(callObjectCreator.CreateStandardCurrencyBalanceCall(request), x =>
             {
                 if(callback != null)
-                    callback(responseCreator.CreateSimpleItemInfoResponse(x));
+                    callback(responseCreator.CreateStandardCurrencyBalanceResponse(x));
             }));
         }
 

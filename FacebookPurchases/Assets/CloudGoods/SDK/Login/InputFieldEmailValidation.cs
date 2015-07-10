@@ -10,6 +10,8 @@ namespace CloudGoods.SDK.Login
 
         protected override bool Validate(string currentInput, bool isSecondcheck = false)
         {
+            Debug.Log("Validate string for email: " + currentInput);
+
             if (string.IsNullOrEmpty(currentInput))
             {
                 return false;

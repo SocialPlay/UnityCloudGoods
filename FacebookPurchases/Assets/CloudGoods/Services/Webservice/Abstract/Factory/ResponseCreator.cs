@@ -28,7 +28,9 @@ namespace CloudGoods.Services.Webservice
 
         CurrencyInfoResponse CreateCurrencyInfoResponse(string responseData);
 
-        CurrencyBalanceResponse CreateCurrencyBalanceResponse(string responseData);
+        PremiumCurrencyBalanceResponse CreatePremiumCurrencyBalanceResponse(string responseData);
+
+        StandardCurrencyBalanceResponse CreateStandardCurrencyBalanceResponse(string responseData);
 
         SimpleItemInfo CreateSimpleItemInfoResponse(string responseData);
 

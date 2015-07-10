@@ -4,6 +4,7 @@ using System.Collections;
 using CloudGoods.SDK.Models;
 using CloudGoods.Enums;
 using CloudGoods.SDK;
+using System.Collections.Generic;
 
 namespace CloudGoods.SDK.Store.UI
 {
@@ -12,14 +13,16 @@ namespace CloudGoods.SDK.Store.UI
     {
 
         public CurrencyType type = CurrencyType.Standard;
-        RawImage mTexture;
+        public List<int> StandardCurrencyAccessLocation = null;
+        RawImage mTexture;      
+
 
         void Start()
         {
             mTexture = GetComponent<RawImage>();
             if (type == CurrencyType.Standard)
             {
-                CurrencyManager.GetStandardCurrencyDetails(0, SetCurrencyLabel);
+                CurrencyManager.GetStandardCurrencyDetails(StandardCurrencyAccessLocation, SetCurrencyLabel);
             }
             else if (type == CurrencyType.Premium)
             {
@@ -29,8 +32,7 @@ namespace CloudGoods.SDK.Store.UI
 
         void SetCurrencyLabel(string name, Texture2D icon)
         {
-            if(mTexture != null)
-                mTexture.texture = icon;
+            mTexture.texture = icon;
         }
     }
 }

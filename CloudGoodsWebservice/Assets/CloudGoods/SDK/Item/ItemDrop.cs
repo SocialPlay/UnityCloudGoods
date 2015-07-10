@@ -31,7 +31,6 @@ namespace CloudGoods.SDK.Item
 
                 else
                     dropPosition = DropItem(item, dropPosition, dropModelDefault, null, item.Amount);
-
             }
         }
 

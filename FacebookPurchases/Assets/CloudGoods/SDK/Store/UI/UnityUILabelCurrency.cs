@@ -22,6 +22,8 @@ namespace CloudGoods.SDK.Store.UI
             UnityUIItemPurchase.OnPurchasedItem += UnityUIItemPurchase_OnPurchasedItem;
             PremiumCurrencyBundleStore.OnPremiumCurrencyPurchased += PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased;
             UnityUIBundlePurchasing.OnPurchaseSuccessful += ItemBundlePurchaseSuccess;
+
+            UpdateLabels();
         }
 
         void OnDisable()
@@ -38,9 +40,7 @@ namespace CloudGoods.SDK.Store.UI
 
         void PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased(PurchasePremiumCurrencyBundleResponse obj)
         {
-            Debug.Log("Update labels");
-            //UpdateLabels();
-            Invoke("UpdateLabels", 2.0f);
+            UpdateLabels();
         }
 
         void ItemBundlePurchaseSuccess(ItemBundlePurchaseResponse response)
@@ -48,19 +48,12 @@ namespace CloudGoods.SDK.Store.UI
             UpdateLabels();
         }
 
-
-        void Start()
-        {
-            UpdateLabels();
-        }
-
-
         void UpdateLabels()
         {
             mLabel = GetComponent<Text>();
             if (type == CurrencyType.Standard)
             {
-                CurrencyManager.GetStandardCurrencyBalance(0, SetCurrencyLabel);
+                CurrencyManager.GetStandardCurrencyBalance(null, SetCurrencyLabel);
             }
             else if (type == CurrencyType.Premium)
             {
@@ -70,7 +63,6 @@ namespace CloudGoods.SDK.Store.UI
 
         void SetCurrencyLabel(int amount)
         {
-            Debug.Log("Label amount:" + amount);
             mLabel.text = amount.ToString();
         }
     }

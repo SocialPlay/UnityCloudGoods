@@ -66,9 +66,14 @@ namespace CloudGoods.Services.Webservice
             return JsonMapper.ToObject<CurrencyInfoResponse>(responseData);
         }
 
-        public CurrencyBalanceResponse CreateCurrencyBalanceResponse(string responseData)
+        public PremiumCurrencyBalanceResponse CreatePremiumCurrencyBalanceResponse(string responseData)
         {
-            return JsonMapper.ToObject<CurrencyBalanceResponse>(responseData);
+            return JsonMapper.ToObject<PremiumCurrencyBalanceResponse>(responseData);
+        }
+
+        public StandardCurrencyBalanceResponse CreateStandardCurrencyBalanceResponse(string responseData)
+        {       
+            return JsonMapper.ToObject<StandardCurrencyBalanceResponse>(responseData);
         }
 
         public List<StoreItem> CreateGetStoreItemResponse(string responseData)
@@ -79,6 +84,7 @@ namespace CloudGoods.Services.Webservice
 
         public SimpleItemInfo CreateSimpleItemInfoResponse(string responseData)
         {
+           
             return JsonMapper.ToObject<SimpleItemInfo>(responseData);
         }
 

@@ -9,8 +9,11 @@ using UnityEngine.UI;
 
 public class UserItemContainerExample : MonoBehaviour {
 
+
+
     public List<PersistentItemContainer> containers;
-    public Text DisplayMessage;
+    public GameObject tagsMenu;
+    bool isTagsMenuOpen = false;
 
     void Awake()
     {
@@ -25,8 +28,27 @@ public class UserItemContainerExample : MonoBehaviour {
 
     void OnRegisteredtoSession(CloudGoodsUser user)
     {
-        DisplayMessage.text = user.UserName + "'s Inventory";
-
         ItemContainerManager.RefreshAllPersistentItemContainers();
+    }
+
+    public void TogglerTagsMenu()
+    {
+        if (isTagsMenuOpen)
+        {
+            tagsMenu.SetActive(false);
+            isTagsMenuOpen = false;
+        }
+        else
+        {
+            tagsMenu.SetActive(true);
+            isTagsMenuOpen = true;
+        }
+    }
+
+    public void CloseTagsMenu()
+    {
+        tagsMenu.SetActive(false);
+        isTagsMenuOpen = false;
+
     }
 }
