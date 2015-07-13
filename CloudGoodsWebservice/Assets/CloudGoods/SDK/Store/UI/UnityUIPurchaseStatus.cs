@@ -14,11 +14,18 @@ namespace CloudGoods.SDK.Store.UI
         public GameObject purchasePopup;
 
         // Use this for initialization
-        void Awake()
+        void OnEnable()
         {
             UnityUIItemPurchase.OnPurchasedItem += UnityUIItemPurchase_OnPurchasedItem;
             UnityUIBundlePurchasing.OnPurchaseSuccessful += UnityUIBundlePurchaseSuccessful;
             CallHandler.IsError += CallHandler_IsError;
+        }
+
+        void OnDisable()
+        {
+            UnityUIItemPurchase.OnPurchasedItem -= UnityUIItemPurchase_OnPurchasedItem;
+            UnityUIBundlePurchasing.OnPurchaseSuccessful -= UnityUIBundlePurchaseSuccessful;
+            CallHandler.IsError -= CallHandler_IsError;
         }
 
         void CallHandler_IsError(SDK.Models.WebserviceError obj)

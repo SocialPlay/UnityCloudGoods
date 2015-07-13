@@ -35,7 +35,7 @@ namespace SocialPlay.Bundles
         void Response(AssetBundle bundle, Action<AssetBundle> callback)
         {
             callback(bundle);
-            //bundle.Unload (false);
+            bundle.Unload (false);
             Destroy(gameObject);
         }
 
