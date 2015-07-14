@@ -16,17 +16,20 @@ namespace CloudGoods.CurrencyPurchase
 
         void Start()
         {
-            FacebookPurchasing = this.gameObject.AddComponent(Type.GetType("FacebookPurchasing")) as IFacebookPurchase;
+#if UNITY_WEBPLAYER
+            FacebookPurchasing = this.gameObject.AddComponent<FacebookPurchasing>() as IFacebookPurchase;
             FacebookPurchasing.Init();
+#endif
         }
 
         public void Purchase(PremiumBundle bundleItem, int amount, string userID)
         {
-
+#if UNITY_WEBPLAYER
             if (Type.GetType("FacebookPurchasing") != null)
             {
-                FacebookPurchasing = this.gameObject.AddComponent(Type.GetType("FacebookPurchasing")) as IFacebookPurchase;
+                FacebookPurchasing = this.gameObject.AddComponent<FacebookPurchasing>() as IFacebookPurchase;
             }
+#endif
 
             if (FacebookPurchasing == null)
             {
@@ -35,44 +38,42 @@ namespace CloudGoods.CurrencyPurchase
             }
 
             currentBundleID = int.Parse(bundleItem.BundleID);
-            Console.WriteLine("Credit bundle purchase:  ID: " + bundleItem.BundleID + " Amount: " + amount);
-            Debug.Log("ID: " + bundleItem.BundleID + "\nAmount: " + amount + "\nUserID: " + userID);
             FacebookPurchasing.Purchase(bundleItem, amount, OnReceivedFacebookCurrencyPurchase);
         }
 
         public void OnReceivedFacebookCurrencyPurchase(string data)
         {
             Debug.Log("data: " + data);
-            JsonMapper.ToObject(data);
+            JsonData receiptData = JsonMapper.ToObject(data);
 
-            //Newtonsoft.Json.Linq.JToken parsedData = Newtonsoft.Json.Linq.JToken.Parse(data);
+            if (data.Contains("error"))
+            {
+                PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse()
+                {
+                    Balance = 0,
+                    Message = receiptData["error_message"].ToString(),
+                    StatusCode = int.Parse(receiptData["error_code"].ToString())
+                };
 
-            //if (parsedData["error_message"] != null)
-            //{
-            //    PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
-            //    response.StatusCode = 0;
-            //    response.Message = parsedData["error_message"].ToString();
+                OnPurchaseErrorEvent(response);
+                return;
+            }
 
-            //    if (OnPurchaseErrorEvent != null) OnPurchaseErrorEvent(response);
-            //    return;
-            //}
+            if (receiptData["status"].ToString() == "completed")
+            {
+                PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse()
+                {
+                    Balance = 0,
+                    Message = receiptData["status"].ToString(),
+                    StatusCode = 0
+                };
 
-            //Debug.Log("parsedData: " + parsedData.ToString());
-
-            //BundlePurchaseRequest bundlePurchaseRequest = new BundlePurchaseRequest();
-            //bundlePurchaseRequest.BundleID = currentBundleID;
-            //bundlePurchaseRequest.UserID = CallHandler.User.userID.ToString();
-            //bundlePurchaseRequest.ReceiptToken = parsedData["payment_id"].ToString();
-
-            //TODO implement platform check for platform premium currency bundle purchase
-            //bundlePurchaseRequest.PaymentPlatform = 1;
-
-            //string bundleJsonString = JsonConvert.SerializeObject(bundlePurchaseRequest);
-
-            //CloudGoods.PurchaseCreditBundles(bundleJsonString, OnReceivedPurchaseResponse);
-
-            //if (RecievedPurchaseResponse != null)
-            //    RecievedPurchaseResponse(data);
+                OnReceivedPurchaseResponse(response);
+            }
+            else
+            {
+                OnPurchaseErrorEvent(null);
+            }
 
         }
 
@@ -80,8 +81,6 @@ namespace CloudGoods.CurrencyPurchase
         {
             if (RecievedPurchaseResponse != null)
                 RecievedPurchaseResponse(data);
-
-            //CloudGoods.GetPremiumCurrencyBalance(null);
         }
     }
 }

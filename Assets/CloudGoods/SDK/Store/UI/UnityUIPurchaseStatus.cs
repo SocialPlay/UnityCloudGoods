@@ -5,6 +5,7 @@ using CloudGoods.Services;
 using CloudGoods.Services.WebCommunication;
 using CloudGoods.SDK.Models;
 using CloudGoods.ItemBundles;
+using CloudGoods.CurrencyPurchase;
 
 namespace CloudGoods.SDK.Store.UI
 {
@@ -14,23 +15,23 @@ namespace CloudGoods.SDK.Store.UI
         public GameObject purchasePopup;
 
         // Use this for initialization
-        void OnEnable()
+        void Awake()
         {
             UnityUIItemPurchase.OnPurchasedItem += UnityUIItemPurchase_OnPurchasedItem;
             UnityUIBundlePurchasing.OnPurchaseSuccessful += UnityUIBundlePurchaseSuccessful;
+            PremiumCurrencyBundleStore.OnPremiumCurrencyPurchased += PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased;
             CallHandler.IsError += CallHandler_IsError;
         }
 
-        void OnDisable()
+        void PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased(PurchasePremiumCurrencyBundleResponse obj)
         {
-            UnityUIItemPurchase.OnPurchasedItem -= UnityUIItemPurchase_OnPurchasedItem;
-            UnityUIBundlePurchasing.OnPurchaseSuccessful -= UnityUIBundlePurchaseSuccessful;
-            CallHandler.IsError -= CallHandler_IsError;
+            purchasePopup.SetActive(true);
+            purchasePopup.GetComponentInChildren<Text>().text = "Purchase Successful";
         }
 
         void CallHandler_IsError(SDK.Models.WebserviceError obj)
         {
-            if(obj.ErrorCode == 500)
+            if (obj.ErrorCode == 500)
             {
                 purchasePopup.SetActive(true);
                 purchasePopup.GetComponentInChildren<Text>().text = obj.Message;
