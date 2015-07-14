@@ -163,7 +163,9 @@ namespace CloudGoods.CurrencyPurchase
             isPurchaseRequest = false;
 
             if (OnPremiumCurrencyPurchased != null)
+            {
                 OnPremiumCurrencyPurchased(data);
+            }
         }
 
         void platformPurchasor_OnPurchaseErrorEvent(PurchasePremiumCurrencyBundleResponse obj)

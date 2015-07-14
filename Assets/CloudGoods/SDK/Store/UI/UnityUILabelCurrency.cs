@@ -40,7 +40,7 @@ namespace CloudGoods.SDK.Store.UI
 
         void PremiumCurrencyBundleStore_OnPremiumCurrencyPurchased(PurchasePremiumCurrencyBundleResponse obj)
         {
-            UpdateLabels();
+            Invoke("UpdateLabels", 1.5f);
         }
 
         void ItemBundlePurchaseSuccess(ItemBundlePurchaseResponse response)
