@@ -16,6 +16,20 @@ namespace CloudGoods.Services
             _LastDoNotUse,
         }
 
+        public enum BuildPlatformType
+        {
+            Automatic = 0,
+            Facebook = 1,
+            Kongergate = 2,
+            Android = 3,
+            IOS = 4,
+            CloudGoodsStandAlone = 6,
+            Unknown = 7,
+            Editor = 8,
+            Steam = 9
+        }
+
+
         static public string VERSION = "1.0";
 
         static public string mainPath = "Assets/CloudGoods/Textures/";
@@ -31,11 +45,14 @@ namespace CloudGoods.Services
         public Texture2D defaultTexture;
         public GameObject defaultItemDrop;
         public GameObject defaultUIItem;
+        public BuildPlatformType platformType;
         private string domainURL = "";
 
         public List<ItemPrefabInitilizer.DropPrefab> itemInitializerPrefabs = new List<ItemPrefabInitilizer.DropPrefab>();
 
         static CloudGoodsSettings mInst;
+
+        static public Action<BuildPlatformType> OnBuildPlatformFound;
 
         static public CloudGoodsSettings instance
         {
@@ -140,6 +157,31 @@ namespace CloudGoods.Services
             get
             {
                 return instance.itemInitializerPrefabs;
+            }
+        }
+
+        static public BuildPlatformType PlatformType
+        {
+            get
+            {
+                if (instance.platformType == BuildPlatformType.Automatic)
+                {
+#if UNITY_WEBPLAYER
+                return BuildPlatformType.Facebook;
+#endif
+#if UNITY_IPHONE
+                return BuildPlatformType.IOS;
+#elif UNITY_ANDROID
+                return BuildPlatformType.Android;
+#endif
+#if UNITY_EDITOR
+                return  BuildPlatformType.Editor;
+#endif
+                }
+                else
+                {
+                     return instance.platformType;
+                }
             }
         }
 

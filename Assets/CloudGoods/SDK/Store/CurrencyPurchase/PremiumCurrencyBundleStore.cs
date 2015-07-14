@@ -45,32 +45,32 @@ namespace CloudGoods.CurrencyPurchase
             Debug.Log("Initialize Credit Bundles");
             ItemStoreServices.GetPremiumCurrencyBalance(null);
 
-            switch (BuildPlatform.Platform)
+            switch (CloudGoodsSettings.PlatformType)
             {
-                case BuildPlatform.BuildPlatformType.Automatic:
+                case CloudGoodsSettings.BuildPlatformType.Automatic:
                     if (isWaitingForPlatform) return;
                     isWaitingForPlatform = true;
-                    BuildPlatform.OnBuildPlatformFound += (platform) =>
+                    CloudGoodsSettings.OnBuildPlatformFound += (platform) =>
                     {
                         Debug.Log("Recived new build platform");
                         Initialize();
                     };
                     return;
-                case BuildPlatform.BuildPlatformType.Facebook:
+                case CloudGoodsSettings.BuildPlatformType.Facebook:
                     platformPurchasor = gameObject.AddComponent<FaceBookPurchaser>();
                     break;
-                case BuildPlatform.BuildPlatformType.Kongergate:
+                case CloudGoodsSettings.BuildPlatformType.Kongergate:
                     platformPurchasor = gameObject.AddComponent<KongregatePurchase>();
                     break;
-                case BuildPlatform.BuildPlatformType.Android:
+                case CloudGoodsSettings.BuildPlatformType.Android:
                     platformPurchasor = gameObject.AddComponent<AndroidPremiumCurrencyPurchaser>();
                     break;
-                case BuildPlatform.BuildPlatformType.IOS:
+                case CloudGoodsSettings.BuildPlatformType.IOS:
                     platformPurchasor = gameObject.AddComponent<iOSPremiumCurrencyPurchaser>();
                     GameObject o = new GameObject("iOSConnect");
                     o.AddComponent<iOSConnect>();
                     break;
-                case BuildPlatform.BuildPlatformType.CloudGoodsStandAlone:
+                case CloudGoodsSettings.BuildPlatformType.CloudGoodsStandAlone:
                     Debug.LogWarning("Cloud Goods Stand alone has not purchase method currently.");
                     break;
             }
@@ -84,7 +84,7 @@ namespace CloudGoods.CurrencyPurchase
             platformPurchasor.RecievedPurchaseResponse += OnRecievedPurchaseResponse;
             platformPurchasor.OnPurchaseErrorEvent += platformPurchasor_OnPurchaseErrorEvent;
 
-            if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.EditorTestPurchasing)
+            if (CloudGoodsSettings.PlatformType == CloudGoodsSettings.BuildPlatformType.Editor)
             {
                 Debug.Log("Get credit bundles from editor");
 
@@ -92,8 +92,8 @@ namespace CloudGoods.CurrencyPurchase
             }
             else
             {
-                Debug.Log("Purchasing credit bundles from platform:" + BuildPlatform.Platform);
-                ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest((int)BuildPlatform.Platform), OnPurchaseBundlesRecieved);
+                Debug.Log("Purchasing credit bundles from platform:" + CloudGoodsSettings.PlatformType);
+                ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest((int)CloudGoodsSettings.PlatformType), OnPurchaseBundlesRecieved);
             }
 
             isInitialized = true;

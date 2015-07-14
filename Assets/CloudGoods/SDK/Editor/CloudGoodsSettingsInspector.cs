@@ -156,8 +156,11 @@ namespace CloudGoods.UnityEditor
                 EditorGUILayout.HelpBox("Go To http://developer.socialplay.com to get your AppID and AppSecret", MessageType.Warning);
             }
 
+            GUILayout.Label("Build Settings", "BoldLabel");
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("platformType"), new GUIContent("Build Platform"));
+
             GUILayout.Label("Example Scene Settings", "BoldLabel");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("expSceneUserName"), new GUIContent("UserName"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("expSceneUserName"), new GUIContent("User Email"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("expScenePass"), new GUIContent("Password"));
 
             EditorGUILayout.Separator();

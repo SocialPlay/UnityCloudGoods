@@ -23,9 +23,9 @@ public class KongregateLogin : MonoBehaviour
 
     public void OnKongregateAPILoaded(string userInfoString)
     {
-        if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.Automatic)
+        if (CloudGoodsSettings.PlatformType == CloudGoodsSettings.BuildPlatformType.Automatic)
         {
-            BuildPlatform.Platform = BuildPlatform.BuildPlatformType.Kongergate;
+            CloudGoodsSettings.instance.platformType = CloudGoodsSettings.BuildPlatformType.Kongergate;
         }
         string[] parts = userInfoString.Split('|');
 

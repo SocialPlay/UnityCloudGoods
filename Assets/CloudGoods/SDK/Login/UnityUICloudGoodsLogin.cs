@@ -235,13 +235,13 @@ namespace CloudGoods.SDK.Login
         {
             if (IsKeptActiveOnAllPlatforms) return true;
 
-            if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.Automatic)
+            if (CloudGoodsSettings.PlatformType == CloudGoodsSettings.BuildPlatformType.Automatic)
             {
-                BuildPlatform.OnBuildPlatformFound += platform => { RemoveIfNeeded(); };
+                CloudGoodsSettings.OnBuildPlatformFound += platform => { RemoveIfNeeded(); };
                 return false;
             }
 
-            if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.Facebook || BuildPlatform.Platform == BuildPlatform.BuildPlatformType.Kongergate)
+            if (CloudGoodsSettings.PlatformType == CloudGoodsSettings.BuildPlatformType.Facebook || CloudGoodsSettings.PlatformType == CloudGoodsSettings.BuildPlatformType.Kongergate)
             {
                 Destroy(this);
                 return false;
