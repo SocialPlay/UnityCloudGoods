@@ -23,6 +23,8 @@ namespace CloudGoods.Services
 
         public static void Login(LoginRequest request, Action<CloudGoodsUser> callback)
         {
+            request.DeviceType = GetDeviceType();
+
             CallHandler.Instance.Login(request, user =>
             {
                 _ActiveUser = user;
@@ -48,11 +50,34 @@ namespace CloudGoods.Services
 
         public static void LoginByPlatform(LoginByPlatformRequest request, Action<CloudGoodsUser> callback)
         {
+            request.DeviceType = GetDeviceType();
+
             CallHandler.Instance.LoginByPlatform(request, user =>
             {
                 _ActiveUser = user;
                 callback(user);
             });
+        }
+
+        static int GetDeviceType()
+        {
+            switch(CloudGoodsSettings.PlatformType)
+            {
+                case CloudGoodsSettings.BuildPlatformType.Editor:
+                    return 2;
+                case CloudGoodsSettings.BuildPlatformType.CloudGoodsStandAlone:
+                    return 2;
+                case CloudGoodsSettings.BuildPlatformType.IOS:
+                    return 4;
+                case CloudGoodsSettings.BuildPlatformType.Android:
+                    return 3;
+                case CloudGoodsSettings.BuildPlatformType.Kongergate:
+                    return 1;
+                case CloudGoodsSettings.BuildPlatformType.Facebook:
+                    return 1;
+                default:
+                    return 0;
+            }
         }
     }
 }
