@@ -32,7 +32,7 @@ namespace CloudGoods.SDK.Store.UI
         public RawImage itemTexture;
 
         public List<int> StandardCurrencyAccessLocations = new List<int>();
-        public int purchaseLocation = 1;
+        public int purchaseLocation = 0;
 
         int premiumCurrencyCost = 0;
         int standardCurrencyCost = 0;
