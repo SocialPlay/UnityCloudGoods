@@ -73,7 +73,12 @@ namespace CloudGoods.CurrencyPurchase
                 case CloudGoodsSettings.BuildPlatformType.CloudGoodsStandAlone:
                     Debug.LogWarning("Cloud Goods Stand alone has not purchase method currently.");
                     break;
+                case CloudGoodsSettings.BuildPlatformType.Editor:
+                    Debug.LogWarning("Cloud Goods Stand alone has not purchase method currently.");
+                    break;
             }
+
+            ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest((int)CloudGoodsSettings.PlatformType), OnPurchaseBundlesRecieved);
 
             if (platformPurchasor == null)
             {
@@ -83,18 +88,6 @@ namespace CloudGoods.CurrencyPurchase
 
             platformPurchasor.RecievedPurchaseResponse += OnRecievedPurchaseResponse;
             platformPurchasor.OnPurchaseErrorEvent += platformPurchasor_OnPurchaseErrorEvent;
-
-            if (CloudGoodsSettings.PlatformType == CloudGoodsSettings.BuildPlatformType.Editor)
-            {
-                Debug.Log("Get credit bundles from editor");
-
-                ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest(1), OnPurchaseBundlesRecieved);
-            }
-            else
-            {
-                Debug.Log("Purchasing credit bundles from platform:" + CloudGoodsSettings.PlatformType);
-                ItemStoreServices.GetPremiumBundles(new PremiumBundlesRequest((int)CloudGoodsSettings.PlatformType), OnPurchaseBundlesRecieved);
-            }
 
             isInitialized = true;
         }
@@ -153,7 +146,13 @@ namespace CloudGoods.CurrencyPurchase
             if (!isPurchaseRequest)
             {
                 isPurchaseRequest = true;
-                platformPurchasor.Purchase(item, 1, AccountServices.ActiveUser.UserID.ToString());
+                if(platformPurchasor != null)
+                    platformPurchasor.Purchase(item, 1, AccountServices.ActiveUser.UserID.ToString());
+                else
+                {
+                    Debug.LogError("PlatformPurchasor not initialized");
+                    isPurchaseRequest = false;
+                }
             }
         }
 
