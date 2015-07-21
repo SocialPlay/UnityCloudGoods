@@ -182,6 +182,7 @@ namespace CloudGoods.Services
                 {
                      return instance.platformType;
                 }
+                return BuildPlatformType.Unknown;
             }
         }
 
