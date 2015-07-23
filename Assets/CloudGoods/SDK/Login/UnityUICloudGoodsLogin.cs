@@ -122,23 +122,16 @@ namespace CloudGoods.SDK.Login
 
         public void Login()
         {
-            Debug.Log("Login");
 
             string ErrorMsg = "";
             if (!loginUserEmailValidator.IsValidCheck())
             {
-                loginUserEmail.text = "";
-                loginUserPassword.placeholder.GetComponent<Text>().color = Color.red;
-                loginUserEmail.placeholder.GetComponent<Text>().text = "Invalid Email";
                 ErrorMsg = "Invalid Email";
             }
 
             if (!loginUserPasswordValidator.IsValidCheck())
             {
                 if (!string.IsNullOrEmpty(ErrorMsg)) ErrorMsg += "\n";
-                loginUserPassword.text = "";
-                loginUserPassword.placeholder.GetComponent<Text>().color = Color.red;
-                loginUserPassword.placeholder.GetComponent<Text>().text = "Invalid Password";
                 ErrorMsg = "Invalid Password";
             }
 
@@ -156,26 +149,16 @@ namespace CloudGoods.SDK.Login
             string ErrorMsg = "";
             if (!registerUserEmailValidator.IsValidCheck())
             {
-                registerUserEmail.text = "";
-                registerUserEmail.placeholder.GetComponent<Text>().color = Color.red;
-                registerUserEmail.placeholder.GetComponent<Text>().text = "Invalid Email";
-                ErrorMsg = "Invalid Email";
-                
+                ErrorMsg = "Invalid Email";        
             }
 
             if (!registerUserPasswordValidator.IsValidCheck())
             {
-                registerUserPassword.text = "";
-                registerUserPassword.placeholder.GetComponent<Text>().color = Color.red;
-                registerUserPassword.placeholder.GetComponent<Text>().text = "Invalid Password";
                 ErrorMsg = "Invalid password";
             }
 
             if (!registerUserPasswordConfirmValidator.IsValidCheck())
             {
-                registerUserPasswordConfirm.text = "";
-                registerUserPasswordConfirm.placeholder.GetComponent<Text>().color = Color.red;
-                registerUserPasswordConfirm.placeholder.GetComponent<Text>().text = "Invalid Password";
                 ErrorMsg = "Invalid password";
             }
 
@@ -191,9 +174,6 @@ namespace CloudGoods.SDK.Login
             string ErrorMsg = "";
             if (!loginUserEmailValidator.IsValidCheck())
             {
-                loginUserEmail.text = "";
-                loginUserEmail.placeholder.GetComponent<Text>().color = Color.red;
-                loginUserEmail.placeholder.GetComponent<Text>().text = "Invalid Email";
                 ErrorMsg = "Password reset requires valid E-mail";
             }
 

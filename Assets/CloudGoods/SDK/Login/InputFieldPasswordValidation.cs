@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 namespace CloudGoods.SDK.Login
 {
@@ -9,6 +10,9 @@ namespace CloudGoods.SDK.Login
 
         public int passwordRequiredLength = 6;
         public InputField requiredMatchUI = null;
+
+        public static Action<string> OnPasswordLengthInvalid;
+        public static Action<string> OnPasswordNotMatching;
 
         protected override bool Validate(string currentInput, bool isSecondcheck = false)
         {
@@ -19,7 +23,10 @@ namespace CloudGoods.SDK.Login
                 {
                     foreach (InputFieldValidation validation in requiredMatchUI.GetComponentsInChildren<InputFieldValidation>())
                     {
-                        validation.IsValidCheck(true);
+                        if(validation.IsValidCheck(true) == false)
+                        {
+                            OnValidationFailed("Passwords Do Not Match");
+                        }
                     }
                 }
                 if (requiredMatchUI.text != currentInput)
@@ -30,11 +37,13 @@ namespace CloudGoods.SDK.Login
 
             if (string.IsNullOrEmpty(currentInput))
             {
+                OnValidationFailed("Password has invalid length");
                 return false;
             }
 
             if (currentInput.Length < passwordRequiredLength)
             {
+                OnValidationFailed("Password has invalid length");
                 return false;
             }
 
