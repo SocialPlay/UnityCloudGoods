@@ -159,10 +159,6 @@ namespace CloudGoods.UnityEditor
             GUILayout.Label("Build Settings", "BoldLabel");
             EditorGUILayout.PropertyField(serializedObject.FindProperty("platformType"), new GUIContent("Build Platform"));
 
-            GUILayout.Label("Example Scene Settings", "BoldLabel");
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("expSceneUserName"), new GUIContent("User Email"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("expScenePass"), new GUIContent("Password"));
-
             EditorGUILayout.Separator();
             GUILayout.Label("Item Container", "BoldLabel");
 

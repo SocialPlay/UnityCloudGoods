@@ -108,27 +108,6 @@ namespace CloudGoods.Services
             }
         }
 
-        static public string ExpSceneUserName
-        {
-            get{
-                if (!string.IsNullOrEmpty(instance.expSceneUserName))
-                    return instance.expSceneUserName;
-                else
-                    throw new Exception("User Name must be set in the Cloud Goods Settings in order to use the example scenes");
-            }
-        }
-
-        static public string ExpScenePassword
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(instance.expScenePass))
-                    return instance.expScenePass;
-                else
-                    throw new Exception("Password must be set in the Cloud Goods Settings in order to use the example scenes");
-            }
-        }
-
         static public Texture2D DefaultTexture
         {
             get
