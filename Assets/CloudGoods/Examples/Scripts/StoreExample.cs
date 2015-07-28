@@ -9,25 +9,11 @@ using CloudGoods.Services.WebCommunication;
 
 public class StoreExample : MonoBehaviour
 {
+    public StoreInitializer initializer;
 
-    public GameObject storeLoader;
-    public UnityUIItemBundleLoader itemBundlesLoader;
 
-    void Awake()
+    void Start()
     {
-        CallHandler.CloudGoodsInitilized += CallHandler_CloudGoodsInitilized;
-        CallHandler.Initialize();
-    }
-
-    void CallHandler_CloudGoodsInitilized()
-    {
-        AccountServices.Login(new LoginRequest(CloudGoodsSettings.ExpSceneUserName, CloudGoodsSettings.ExpScenePassword), OnRegisteredtoSession);
-    }
-
-    void OnRegisteredtoSession(CloudGoodsUser user)
-    {
-        storeLoader.SetActive(true);
-        StoreInitializer initializer = storeLoader.GetComponent<StoreInitializer>();
         initializer.InitializeStore();
     }
 }

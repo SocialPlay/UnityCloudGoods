@@ -9,24 +9,11 @@ using UnityEngine.UI;
 
 public class UserItemContainerExample : MonoBehaviour {
 
-
-
     public List<PersistentItemContainer> containers;
     public GameObject tagsMenu;
     bool isTagsMenuOpen = false;
 
-    void Awake()
-    {
-        CallHandler.CloudGoodsInitilized += CallHandler_CloudGoodsInitilized;
-        CallHandler.Initialize();
-    }
-
-    void CallHandler_CloudGoodsInitilized()
-    {
-        AccountServices.Login(new LoginRequest(CloudGoodsSettings.ExpSceneUserName, CloudGoodsSettings.ExpScenePassword), OnRegisteredtoSession);
-    }
-
-    void OnRegisteredtoSession(CloudGoodsUser user)
+    void Start()
     {
         ItemContainerManager.RefreshAllPersistentItemContainers();
     }
