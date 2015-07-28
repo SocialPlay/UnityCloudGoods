@@ -24,6 +24,11 @@ public class ExampleSceneLogin : MonoBehaviour {
         CallHandler.IsError += CallHandler_IsError;
         loginUserEmailValidator = userEmailInput.GetComponent<InputFieldEmailValidation>();
         loginUserPasswordValidator = userPassword.GetComponent<InputFieldPasswordValidation>();
+
+        if (!string.IsNullOrEmpty(PlayerPrefs.GetString("SocialPlay_Login_UserEmail")))
+        {
+            userEmailInput.text = PlayerPrefs.GetString("SocialPlay_Login_UserEmail");
+        }
     }
 
     void CallHandler_IsError(WebserviceError obj)
@@ -35,6 +40,8 @@ public class ExampleSceneLogin : MonoBehaviour {
     public void Login()
     {
         string ErrorMsg = "";
+
+        PlayerPrefs.SetString("SocialPlay_Login_UserEmail", userEmailInput.text);
 
         if (!loginUserEmailValidator.IsValidCheck())
         {
