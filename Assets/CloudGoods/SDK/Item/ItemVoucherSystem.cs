@@ -9,7 +9,7 @@ using CloudGoods.Services.WebCommunication;
 
 namespace CloudGoods.SDK.Item
 {
-    public class ItemGenerator : MonoBehaviour
+    public class ItemVoucherSystem : MonoBehaviour
     {
         public class GeneratedItems
         {

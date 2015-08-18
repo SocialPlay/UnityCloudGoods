@@ -139,8 +139,6 @@ namespace CloudGoods.SDK.Store.UI
             itemInfo = item;
             itemNameDisplay.text = item.storeItem.ItemInformation.Name;
 
-            Debug.Log("Sale: " + item.storeItem.Sale.Count);
-
             if (item.storeItem.Sale.Count > 0)
             {
                 if (item.storeItem.Sale[0].PremiumCurrencySaleValue > 0)

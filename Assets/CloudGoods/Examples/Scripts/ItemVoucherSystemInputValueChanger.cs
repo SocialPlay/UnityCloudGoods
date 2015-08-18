@@ -2,9 +2,9 @@
 using System.Collections;
 using CloudGoods.SDK.Item;
 
-public class ItemGeneratorInputValueChanger : MonoBehaviour {
+public class ItemVoucherSystemInputValueChanger : MonoBehaviour {
 
-    public ItemGenerator ItemGenerator;
+    public ItemVoucherSystem ItemGenerator;
 
     public void OnMinEnergyChanged(string minEnergy)
     {

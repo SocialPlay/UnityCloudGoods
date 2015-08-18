@@ -5,6 +5,7 @@ using CloudGoods.SDK.Login;
 using CloudGoods.Services;
 using CloudGoods.SDK.Models;
 using CloudGoods.Services.WebCommunication;
+using System;
 
 public class ExampleSceneLogin : MonoBehaviour {
 
@@ -14,10 +15,10 @@ public class ExampleSceneLogin : MonoBehaviour {
     private InputFieldValidation loginUserEmailValidator;
     private InputFieldValidation loginUserPasswordValidator;
 
-    public GameObject ExampleScene;
-
     public GameObject StatusPanel;
     public Text StatusText;
+
+    public static Action<CloudGoodsUser> OnUserLogin;
 
     void Start()
     {
@@ -67,7 +68,9 @@ public class ExampleSceneLogin : MonoBehaviour {
 
     void OnReceivedCloudGoodsUser(CloudGoodsUser user)
     {
-        ExampleScene.SetActive(true);
+        if (OnUserLogin != null)
+            OnUserLogin(user);
+
         this.gameObject.SetActive(false);
     }
 

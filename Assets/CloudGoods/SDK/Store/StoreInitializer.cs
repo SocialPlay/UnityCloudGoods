@@ -25,12 +25,14 @@ namespace CloudGoods.SDK.Store
             ItemStoreServices.GetStoreItems(new StoreItemsRequest(), OnReceivedStoreItems);
         }
 
-
         void OnReceivedStoreItems(List<StoreItem> newStoreItems)
         {
             for (int i = 0; i < newStoreItems.Count; i++)
             {
                 storeItems.Add(newStoreItems[i]);
+
+                if (newStoreItems[i].Sale.Count > 0)
+                    Debug.Log("Sale for item: " + newStoreItems[i].ItemInformation.Name);
             }
 
             OnInitializedStoreItems(storeItems);

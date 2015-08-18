@@ -13,6 +13,9 @@ namespace CloudGoods.SDK.Container
     public class PersistentItemContainer : MonoBehaviour
     {
         public Action<List<InstancedItemInformation>, ItemContainer> LoadedItemsForContainerEvent;
+        public Action<UpdatedStacksResponse> OnAddedItem;
+        public Action<UpdatedStacksResponse> OnRemovedItem;
+        public Action<UpdatedStacksResponse> OnModifiedItem;
 
         public ItemContainer Container;
         public ItemOwnerTypes OwnerType;

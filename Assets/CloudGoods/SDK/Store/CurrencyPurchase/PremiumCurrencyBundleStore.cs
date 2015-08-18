@@ -20,6 +20,7 @@ namespace CloudGoods.CurrencyPurchase
     public class PremiumCurrencyBundleStore : MonoBehaviour
     {
         public static event Action<PurchasePremiumCurrencyBundleResponse> OnPremiumCurrencyPurchased;
+        public static event Action<List<PremiumCurrencyBundle>> OnPremiumBundlesReceived;
         public GameObject Grid;
         [HideInInspector]
         public bool isInitialized = false;
@@ -106,6 +107,9 @@ namespace CloudGoods.CurrencyPurchase
             gridLoader = (IGridLoader)Grid.GetComponent(typeof(IGridLoader));
             gridLoader.ItemAdded += OnItemInGrid;
             gridLoader.LoadGrid(data);
+
+            if (OnPremiumBundlesReceived != null)
+                OnPremiumBundlesReceived(data);
         }
 
         void OnItemInGrid(PremiumCurrencyBundle item, GameObject obj)

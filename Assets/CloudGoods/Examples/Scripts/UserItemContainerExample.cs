@@ -13,7 +13,15 @@ public class UserItemContainerExample : MonoBehaviour {
     public GameObject tagsMenu;
     bool isTagsMenuOpen = false;
 
+    public GameObject ExampleLoginObject;
+
     void Start()
+    {
+        ExampleSceneLogin.OnUserLogin += OnUserLoggedIn;
+        ExampleLoginObject.SetActive(true);
+    }
+
+    void OnUserLoggedIn(CloudGoodsUser user)
     {
         ItemContainerManager.RefreshAllPersistentItemContainers();
     }
