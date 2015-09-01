@@ -1,15 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 using CloudGoods.SDK.Item;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ItemVoucherSystemInputValueChanger : MonoBehaviour {
 
     public ItemVoucherSystem ItemGenerator;
 
+    public GameObject tagPrefab;
+
+    public GameObject andTagsGrid;
+    public GameObject orTagsGrid;
+    public GameObject notTagsGrid;
+
+    public InputField andTagsValue;
+    public InputField orTagsValue;
+    public InputField notTagsValue;
+
     public void OnMinEnergyChanged(string minEnergy)
     {
-        Debug.Log("min energy change: " + minEnergy);
-
         if (string.IsNullOrEmpty(minEnergy))
             return;
 
@@ -18,8 +28,6 @@ public class ItemVoucherSystemInputValueChanger : MonoBehaviour {
 
     public void OnMaxEnergyChanged(string maxEnergy)
     {
-        Debug.Log("max energy change: " + maxEnergy);
-
         if (string.IsNullOrEmpty(maxEnergy))
             return;
 
@@ -34,40 +42,56 @@ public class ItemVoucherSystemInputValueChanger : MonoBehaviour {
         ItemGenerator.TotalEnergyToGenerate = int.Parse(totalEnergy);
     }
 
-    public void OnAndTagsChanged(string andTags)
+    public void OnEnterAndTag()
     {
-        string[] andTagsArray = andTags.Split(',');
+        AddTag(andTagsValue.text, ItemGenerator.AndTags, ItemTag.TagType.And, andTagsGrid);
 
-        ItemGenerator.AndTags.Clear();
-        
-        for(int i = 0; i < andTagsArray.Length; i++)
-        {
-            ItemGenerator.AndTags.Add(andTagsArray[i]);
-        }
     }
 
-    public void OnOrTagsChanged(string orTags)
+    public void OnEnterOrTag()
     {
-        string[] orTagsArray = orTags.Split(',');
-
-        ItemGenerator.OrTags.Clear();
-
-        for (int i = 0; i < orTagsArray.Length; i++)
-        {
-            ItemGenerator.OrTags.Add(orTagsArray[i]);
-        }
+        AddTag(orTagsValue.text, ItemGenerator.OrTags, ItemTag.TagType.Or, orTagsGrid);
     }
 
-    public void OnNotTagsChanged(string NotTags)
+    public void OnEnterNotTag()
     {
-        string[] notTagsArray = NotTags.Split(',');
+        AddTag(notTagsValue.text, ItemGenerator.NotTags, ItemTag.TagType.Not, notTagsGrid);
+    }
 
-        ItemGenerator.NotTags.Clear();
+    private void AddTag(string addTag, List<string> ListTags, ItemTag.TagType tagType, GameObject addGridObject)
+    {
+        GenerateTag(addTag, tagType, addGridObject);
+        ListTags.Add(addTag);
+    }
 
-        for (int i = 0; i < notTagsArray.Length; i++)
-        {
-            ItemGenerator.NotTags.Add(notTagsArray[i]);
-        }
+    public void RemoveAndTag(string removeTag)
+    {
+        RemoveTag(removeTag, ItemGenerator.AndTags);
+    }
+
+    public void RemoveOrTag(string removeTag)
+    {
+        RemoveTag(removeTag, ItemGenerator.OrTags);
+    }
+
+    public void RemoveNotTag(string removeTag)
+    {
+        RemoveTag(removeTag, ItemGenerator.NotTags);
+    }
+
+    void RemoveTag(string tag, List<string> TagList)
+    {
+        TagList.Remove(tag);
+    }
+
+    
+    void GenerateTag(string tagName, ItemTag.TagType tagType, GameObject gridObject)
+    {
+        GameObject newTagObj = GameObject.Instantiate(tagPrefab);
+        ItemTag itemTag = newTagObj.GetComponent<ItemTag>();
+        itemTag.SetUpTag(tagName, tagType, this);
+
+        newTagObj.transform.parent = gridObject.transform;
     }
 
 }

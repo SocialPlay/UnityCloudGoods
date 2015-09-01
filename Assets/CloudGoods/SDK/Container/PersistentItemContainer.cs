@@ -123,9 +123,13 @@ namespace CloudGoods.SDK.Container
 
         void RemovedItem(InstancedItemInformation data, int amount, bool isMoving)
         {
+            Debug.Log("Remove:" + amount);
             if (!isMoving)
             {
-
+                ItemManipulationServices.UpdateItemByStackIds(data.StackLocationId, -amount, data.Location, x =>
+                    {
+                        data.StackLocationId = x.UpdatedStackIds[0].StackId;
+                    });
             }
         }
 

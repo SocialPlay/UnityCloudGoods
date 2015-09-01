@@ -11,25 +11,18 @@ public class CurrencyPurchaseExample : MonoBehaviour {
 
     void OnEnable()
     {
-        CallHandler.CloudGoodsInitilized += CallHandler_CloudGoodsInitilized;
+        ExampleSceneLogin.OnUserLogin += OnUserLoggedIn;
     }
 
     void OnDisable()
     {
-        CallHandler.CloudGoodsInitilized -= CallHandler_CloudGoodsInitilized;
+        ExampleSceneLogin.OnUserLogin -= OnUserLoggedIn;
     }
 
-	void Start () {
-        CallHandler.Initialize();
-	}
 
-    void CallHandler_CloudGoodsInitilized()
+    void OnUserLoggedIn(CloudGoodsUser user)
     {
         //AccountServices.Login(new LoginRequest(CloudGoodsSettings.ExpSceneUserName, CloudGoodsSettings.ExpScenePassword), OnRegisteredtoSession);
-    }
-
-    void OnRegisteredtoSession(CloudGoodsUser user)
-    {
         PremiumCurrencyStore.SetActive(true);
     }
 }

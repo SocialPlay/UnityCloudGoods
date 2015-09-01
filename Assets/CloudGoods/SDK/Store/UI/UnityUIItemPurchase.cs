@@ -145,18 +145,18 @@ namespace CloudGoods.SDK.Store.UI
                     premiumCurrencyCost = item.storeItem.Sale[0].PremiumCurrencySaleValue;
                 else
                 {
-                    premiumCurrencyCost = item.storeItem.CreditValue;
+                    premiumCurrencyCost = item.storeItem.PremumCurrencyValue;
                 }
 
                 if (item.storeItem.Sale[0].StandardCurrencySaleValue > 0)
                     standardCurrencyCost = item.storeItem.Sale[0].StandardCurrencySaleValue;
                 else
-                    standardCurrencyCost = item.storeItem.CoinValue;
+                    standardCurrencyCost = item.storeItem.StandardCurrencyValue;
             }
             else
             {
-                premiumCurrencyCost = item.storeItem.CreditValue;
-                standardCurrencyCost = item.storeItem.CoinValue;
+                premiumCurrencyCost = item.storeItem.PremumCurrencyValue;
+                standardCurrencyCost = item.storeItem.StandardCurrencyValue;
             }
 
             itemQuantityAmount.text = "1";

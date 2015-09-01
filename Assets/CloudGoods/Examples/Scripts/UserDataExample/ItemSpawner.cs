@@ -36,8 +36,8 @@ public class ItemSpawner : MonoBehaviour {
     {
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
 
-        Vector3 spawnPosition = new Vector3(Random.insideUnitSphere.x * sphereCollider.radius,
-                 transform.position.y, Random.insideUnitSphere.z * sphereCollider.radius);
+        Vector3 spawnPosition = new Vector3(Random.insideUnitSphere.x * sphereCollider.radius / 2,
+                 transform.position.y, Random.insideUnitSphere.z * sphereCollider.radius / 2);
 
         GameObject targetObj = (GameObject)GameObject.Instantiate(Target, spawnPosition, transform.rotation);
         targetObj.AddComponent<Target>().example = example;

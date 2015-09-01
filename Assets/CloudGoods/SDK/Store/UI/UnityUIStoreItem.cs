@@ -63,17 +63,17 @@ namespace CloudGoods.SDK.Store.UI
                 if(storeItem.Sale[0].PremiumCurrencySaleValue > 0)
                     tmpPremiumCost = storeItem.Sale[0].PremiumCurrencySaleValue;
                 else
-                    tmpPremiumCost = storeItem.CreditValue;
+                    tmpPremiumCost = storeItem.PremumCurrencyValue;
 
                 if(storeItem.Sale[0].StandardCurrencySaleValue > 0)
                     tmpStandardCost = storeItem.Sale[0].StandardCurrencySaleValue;
                 else
-                    tmpStandardCost = storeItem.CoinValue;
+                    tmpStandardCost = storeItem.StandardCurrencyValue;
             }
             else
             {
-                tmpPremiumCost = storeItem.CreditValue;
-                tmpStandardCost = storeItem.CoinValue;
+                tmpPremiumCost = storeItem.PremumCurrencyValue;
+                tmpStandardCost = storeItem.StandardCurrencyValue;
             }
 
             if (tmpPremiumCost > 0 && tmpStandardCost > 0)

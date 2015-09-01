@@ -10,7 +10,6 @@ namespace CloudGoods.SDK.Item
 {
     public class InsertToContainerOnClick : MonoBehaviour
     {
-        public int ContainerLocation;
         bool isPickedUp = false;
 
         public void PickUp()
@@ -20,7 +19,7 @@ namespace CloudGoods.SDK.Item
             {
                 ItemVoucherComponent voucherComponent = GetComponent<ItemVoucherComponent>();
                 List<RedeemItemVouchersRequest.ItemVoucherSelection> selectionList = new List<RedeemItemVouchersRequest.ItemVoucherSelection>();
-                selectionList.Add(new RedeemItemVouchersRequest.ItemVoucherSelection(voucherComponent.voucherInformation.VoucherId, voucherComponent.voucherInformation.Information.Id, voucherComponent.voucherInformation.Amount, ContainerLocation));
+                selectionList.Add(new RedeemItemVouchersRequest.ItemVoucherSelection(voucherComponent.voucherInformation.VoucherId, voucherComponent.voucherInformation.Information.Id, voucherComponent.voucherInformation.Amount, SetItemPickUpLocation.PickUpLocation));
                 RedeemItemVouchersRequest request = new RedeemItemVouchersRequest(selectionList, null);
                 CallHandler.Instance.RedeemItemVoucher(request, UpdatedStacksCallback);
             }

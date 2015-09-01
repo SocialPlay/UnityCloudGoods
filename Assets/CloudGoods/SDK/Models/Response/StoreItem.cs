@@ -13,8 +13,8 @@ namespace CloudGoods.SDK.Models
         public ItemInformation ItemInformation;
         public List<SalePrices> Sale;
         public int ItemId;
-        public int CreditValue;
-        public int CoinValue;
+        public int PremumCurrencyValue;
+        public int StandardCurrencyValue;
         public DateTime AddDate;
 
         public List<StoreItemDetail> ItemDetails

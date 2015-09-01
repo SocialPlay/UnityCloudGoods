@@ -28,6 +28,7 @@ namespace CloudGoods.CurrencyPurchase
 
         IGridLoader gridLoader;
         public IPlatformPurchaser platformPurchasor;
+        public GameObject NoBundlesMsg;
         bool isPurchaseRequest = false;
 
         string domain;
@@ -108,6 +109,11 @@ namespace CloudGoods.CurrencyPurchase
             gridLoader.ItemAdded += OnItemInGrid;
             gridLoader.LoadGrid(data);
 
+            if(data.Count > 0)
+            {
+                NoBundlesMsg.SetActive(false);
+            }
+
             if (OnPremiumBundlesReceived != null)
                 OnPremiumBundlesReceived(data);
         }
@@ -115,7 +121,7 @@ namespace CloudGoods.CurrencyPurchase
         void OnItemInGrid(PremiumCurrencyBundle item, GameObject obj)
         {
             PremiumBundle creditBundle = obj.GetComponent<PremiumBundle>();
-            creditBundle.Amount = item.CreditAmount.ToString();
+            creditBundle.Amount = item.PremiumCurrencyAmount.ToString();
             creditBundle.Cost = item.Cost.ToString();
 
             if (item.Data.Count > 0)
