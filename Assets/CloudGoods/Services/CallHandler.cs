@@ -395,6 +395,9 @@ namespace CloudGoods.Services.WebCommunication
         {
             cg.StartCoroutine(cg.ServiceGetString(cg.callObjectCreator.CreateGetServerTimeObject(), x =>
             {
+
+                Debug.Log("Server time:" + x);
+
                 cg.CalculateServerClientTimeDifference(int.Parse(x));
                 isInitialized = true;
 

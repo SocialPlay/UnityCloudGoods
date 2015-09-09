@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System;
+using CloudGoods.Services.WebCommunication;
 
 namespace CloudGoods.UnityEditor
 {
-
+    [InitializeOnLoad]
     public class AboutCloudGoodsWindow : EditorWindow
     {
         GUIStyle titleStyle = new GUIStyle();
@@ -15,6 +17,44 @@ namespace CloudGoods.UnityEditor
         Rect lastRect;
         static AboutCloudGoodsWindow window = null;
 
+        static bool isStartUpPoppedUp = false;
+        static bool doNotDisplayAgain = false;
+        static bool doNotDisplayConfirm = false;
+
+        static AboutCloudGoodsWindow()
+        {
+            EditorApplication.update += Update;
+        }
+
+
+        static bool CheckForDisplay()
+        {
+            int tmpBool = PlayerPrefs.GetInt("CloudGoodsWindow");
+
+            if (tmpBool == 0)
+                return true;
+            else
+                return false;
+        }
+
+        static void Update ()
+        {
+            if (!isStartUpPoppedUp)
+            {
+                if (!Application.isPlaying)
+                {
+                    if (CheckForDisplay())
+                        AboutWindow();
+                    isStartUpPoppedUp = true;
+                }
+                else
+                {
+                    doNotDisplayAgain = true;
+                    doNotDisplayConfirm = true;
+                    isStartUpPoppedUp = true;
+                }
+            }
+        }
 
         // Add menu named "My Window" to the Window menu
         [MenuItem("Cloud Goods/About")]
@@ -34,7 +74,7 @@ namespace CloudGoods.UnityEditor
 
         static void Init()
         {
-            window.title = "About Cloud Goods";
+            window.titleContent.text = "About Cloud Goods";
 
             window.minSize = new Vector2(600, 350);
             window.maxSize = window.minSize;
@@ -42,8 +82,8 @@ namespace CloudGoods.UnityEditor
             window.titleStyle.fontStyle = FontStyle.Bold;
             window.titleStyle.normal.background = null;
             window.Logo = Resources.Load("Textures/SocialPlay_Logo", typeof(Texture2D)) as Texture2D;
-            //window.Logo2 = Resources.Load("Textures/SocialPlay_Logo2", typeof(Texture2D)) as Texture2D;
 
+            CallHandler.Initialize();
         }
 
         void OnGUI()
@@ -103,6 +143,16 @@ namespace CloudGoods.UnityEditor
             }
 
             GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            doNotDisplayAgain = GUILayout.Toggle(doNotDisplayAgain, "Do not display this window again");
+
+            if(doNotDisplayAgain != doNotDisplayConfirm)
+            {
+                PlayerPrefs.SetInt("CloudGoodsWindow", Convert.ToInt32(doNotDisplayAgain));
+                doNotDisplayConfirm = doNotDisplayAgain;
+            }
             GUILayout.EndHorizontal();
 
         }
